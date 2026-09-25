@@ -1,3 +1,3 @@
 # app-partituras
 
-AplicaciÃ³n web para la visualizaciÃ³n, gestiÃ³n e interacciÃ³n con partituras musicales.
+Aplicación web para la visualización, gestión e interacción con partituras musicales.
