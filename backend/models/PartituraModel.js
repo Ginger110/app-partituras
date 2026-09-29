@@ -1,13 +1,44 @@
 const db = require('../config/db');
 
 const getAll = async () => {
-    // const [rows] = await db.query('SELECT * FROM partitura');
-    // return rows;
+    const [rows] = await db.query(`
+        SELECT p.id, p.nombre, p.estilo, p.precio, p.arreglista, p.editor,
+               o.nombre AS nombre_obra, o.autor AS autor_obra
+        FROM partitura p
+        JOIN obra o ON p.id_obra = o.id_recurso
+    `);
+    return rows;
 };
 
 const getById = async (id) => {
-    // const [rows] = await db.query('SELECT * FROM partitura WHERE id = ?', [id]);
-    // return rows[0];
+    const [rows] = await db.query(`
+        SELECT p.id, p.nombre, p.estilo, p.precio, p.arreglista, p.editor,
+               o.nombre AS nombre_obra, o.autor AS autor_obra
+        FROM partitura p
+        JOIN obra o ON p.id_obra = o.id_recurso
+        WHERE p.id = ?
+    `, [id]);
+    return rows[0];
+};
+
+const getPartiturasBaratas = async (precioMax) => {
+    const [rows] = await db.query(
+        'SELECT id, nombre, estilo, precio FROM partitura WHERE precio < ?',
+        [precioMax]
+    );
+    return rows;
+};
+
+const insertarNuevaPartitura = async (instrumentacion, id_obra, nombre, estilo, arreglo, arreglista, transcriptor, editor, url, info, precio) => {
+    const query = `INSERT INTO partitura 
+        (instrumentacion, id_obra, nombre, estilo, arreglo, arreglista, transcriptor, editor, url, info, precio) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    return await db.execute(query, [instrumentacion, id_obra, nombre, estilo, arreglo, arreglista, transcriptor, editor, url, info, precio]);
+};
+
+const insertarRating = async (id_usuario, valor, nivel_usuario, id_partitura) => {
+    const query = 'INSERT INTO rating (id_usuario, valor, nivel_usuario, id_partitura) VALUES (?, ?, ?, ?)';
+    return await db.execute(query, [id_usuario, valor, nivel_usuario, id_partitura]);
 };
 
 const insertarNuevoUsuario = async (nombre, email, nivel_tecnico, estilo, link_portafolio) => {
