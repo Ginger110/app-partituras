@@ -10,6 +10,8 @@ router.get('/:id', partituraCtrl.getPartituraById);
 
 // --- RUTAS POST (Creación) ---
 router.post('/usuarios', partituraCtrl.crearUsuario);
+router.post('/partituras', partituraCtrl.crearPartitura);
+router.post('/ratings', partituraCtrl.crearRating);
 
 // --- RUTAS PUT (Actualización) ---
 router.put('/partituras/:id/precio', partituraCtrl.actualizarPrecio);
