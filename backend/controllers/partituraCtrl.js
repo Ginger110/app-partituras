@@ -107,7 +107,7 @@ const eliminarUsuario = async (req, res) => {
 
 const ejecutarConsultasEstructurales = async (req, res) => {
     try {
-        const { tipo_consulta } = req.body; // Envías desde Postman qué quieres ejecutar ("alter1", "alter2" o "drop")
+        const { tipo_consulta } = req.body; // tipo_consulta: "alter1" | "alter2" | "drop"
         await PartituraModel.ejecutarDDL(tipo_consulta);
         res.status(200).json({ mensaje: `Consulta estructural ${tipo_consulta} ejecutada exitosamente` });
     } catch (error) {

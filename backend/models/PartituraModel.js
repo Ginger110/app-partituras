@@ -74,7 +74,7 @@ const ejecutarDDL = async (tipo) => {
     } else if (tipo === 'alter2') {
         query = 'ALTER TABLE partitura MODIFY COLUMN precio DECIMAL(10,2);';
     } else if (tipo === 'drop') {
-        query = 'DROP TABLE IF EXISTS rating;'; // Ajusta la tabla a la que deban hacerle DROP según sus consultas originales
+        query = 'DROP TABLE IF EXISTS rating;'; 
     }
     
     if (query) {

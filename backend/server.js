@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 
 const partituraRoutes = require('./routes/partituraRoutes');
+const setupSwagger = require('./swagger');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,6 +11,9 @@ const PORT = process.env.PORT || 3000;
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Inicializar Swagger
+setupSwagger(app);
 
 // Rutas
 app.use('/api/partituras', partituraRoutes);
