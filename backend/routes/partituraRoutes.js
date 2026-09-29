@@ -3,9 +3,10 @@ const router = express.Router();
 const partituraCtrl = require('../controllers/partituraCtrl');
 
 // --- RUTAS GET (Lectura) ---
+// Las rutas fijas/específicas van antes de las parametrizadas (:id) para evitar conflictos en Express
 router.get('/', partituraCtrl.getPartituras);
+router.get('/filtro/baratas', partituraCtrl.obtenerPartiturasBaratas);
 router.get('/:id', partituraCtrl.getPartituraById);
-router.get('/filtro/baratas', partituraCtrl.obtenerPartiturasBaratas); // El JOIN que hicimos antes
 
 // --- RUTAS POST (Creación) ---
 router.post('/usuarios', partituraCtrl.crearUsuario);

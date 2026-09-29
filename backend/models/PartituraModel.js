@@ -1,5 +1,20 @@
 const db = require('../config/db');
 
+const getAll = async () => {
+    // const [rows] = await db.query('SELECT * FROM partitura');
+    // return rows;
+};
+
+const getById = async (id) => {
+    // const [rows] = await db.query('SELECT * FROM partitura WHERE id = ?', [id]);
+    // return rows[0];
+};
+
+const insertarNuevoUsuario = async (nombre, email, nivel_tecnico, estilo, link_portafolio) => {
+    const query = 'INSERT INTO usuario (nombre, email, nivel_tecnico, estilo, link_portafolio) VALUES (?, ?, ?, ?, ?)';
+    return await db.execute(query, [nombre, email, nivel_tecnico, estilo, link_portafolio]);
+};
+
 const updatePrecio = async (id, nuevoPrecio) => {
     const query = 'UPDATE partitura SET precio = ? WHERE id = ?';
     return await db.execute(query, [nuevoPrecio, id]);
@@ -39,7 +54,9 @@ const ejecutarDDL = async (tipo) => {
 };
 
 module.exports = {
-    // Tus otras funciones exportadas...,
+    getAll,
+    getById,
+    insertarNuevoUsuario,
     updatePrecio,
     updateNivelUsuario,
     deletePartitura,

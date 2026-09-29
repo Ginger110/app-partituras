@@ -1,29 +1,32 @@
 const PartituraModel = require('../models/PartituraModel');
 
-const partituraCtrl = {
-  // Lógica de peticiones y respuestas HTTP
-  getPartituras: async (req, res) => {
+const getPartituras = async (req, res) => {
     try {
-      // const data = await PartituraModel.getAll();
-      // res.json(data);
-      res.json({ message: 'Obtener todas las partituras' });
+        // const data = await PartituraModel.getAll();
+        // res.json(data);
+        res.status(200).json({ message: 'Obtener todas las partituras' });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
-  },
-
-  getPartituraById: async (req, res) => {
-    try {
-      const { id } = req.params;
-      // const data = await PartituraModel.getById(id);
-      res.json({ message: `Obtener partitura con id: ${id}` });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  }
 };
 
-module.exports = partituraCtrl;
+const getPartituraById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        // const data = await PartituraModel.getById(id);
+        res.status(200).json({ message: `Obtener partitura con id: ${id}` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const obtenerPartiturasBaratas = async (req, res) => {
+    try {
+        res.status(200).json({ message: 'Obtener partituras baratas' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 const crearUsuario = async (req, res) => {
     try {
@@ -43,16 +46,6 @@ const crearUsuario = async (req, res) => {
         res.status(500).json({ error: 'Error al procesar la inserción' });
     }
 };
-
-// Recuerda exportar esta nueva función junto con las que ya tenías
-module.exports = {
-    // getPartituras,
-    // getPartituraById,
-    crearUsuario
-};
-const PartituraModel = require('../models/PartituraModel');
-
-// (Tus funciones anteriores: getPartituras, getPartituraById, crearUsuario, obtenerPartiturasBaratas...)
 
 const actualizarPrecio = async (req, res) => {
     try {
@@ -106,9 +99,11 @@ const ejecutarConsultasEstructurales = async (req, res) => {
     }
 };
 
-// EXPORTAR TODO (reemplaza tu module.exports actual con este)
 module.exports = {
-    // getPartituras, getPartituraById, crearUsuario, obtenerPartiturasBaratas, // (descomenta las que ya tenías)
+    getPartituras,
+    getPartituraById,
+    obtenerPartiturasBaratas,
+    crearUsuario,
     actualizarPrecio,
     actualizarNivel,
     eliminarPartitura,
