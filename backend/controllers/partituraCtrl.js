@@ -120,6 +120,8 @@ module.exports = {
     getPartituraById,
     obtenerPartiturasBaratas,
     crearUsuario,
+    crearPartitura,
+    crearRating,
     actualizarPrecio,
     actualizarNivel,
     eliminarPartitura,
