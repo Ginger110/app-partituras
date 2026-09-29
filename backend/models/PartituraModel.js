@@ -87,7 +87,10 @@ const ejecutarDDL = async (tipo) => {
 module.exports = {
     getAll,
     getById,
+    getPartiturasBaratas,
     insertarNuevoUsuario,
+    insertarNuevaPartitura,
+    insertarRating,
     updatePrecio,
     updateNivelUsuario,
     deletePartitura,
