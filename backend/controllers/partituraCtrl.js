@@ -2,9 +2,8 @@ const PartituraModel = require('../models/PartituraModel');
 
 const getPartituras = async (req, res) => {
     try {
-        // const data = await PartituraModel.getAll();
-        // res.json(data);
-        res.status(200).json({ message: 'Obtener todas las partituras' });
+        const data = await PartituraModel.getAll();
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -13,8 +12,9 @@ const getPartituras = async (req, res) => {
 const getPartituraById = async (req, res) => {
     try {
         const { id } = req.params;
-        // const data = await PartituraModel.getById(id);
-        res.status(200).json({ message: `Obtener partitura con id: ${id}` });
+        const data = await PartituraModel.getById(id);
+        if (!data) return res.status(404).json({ mensaje: 'Partitura no encontrada' });
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -22,7 +22,9 @@ const getPartituraById = async (req, res) => {
 
 const obtenerPartiturasBaratas = async (req, res) => {
     try {
-        res.status(200).json({ message: 'Obtener partituras baratas' });
+        const precioMax = req.query.max || 10000; // ej: /filtro/baratas?max=5000
+        const data = await PartituraModel.getPartiturasBaratas(precioMax);
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -30,20 +32,34 @@ const obtenerPartiturasBaratas = async (req, res) => {
 
 const crearUsuario = async (req, res) => {
     try {
-        // Desestructuramos el JSON que llega desde Postman
         const { nombre, email, nivel_tecnico, estilo, link_portafolio } = req.body;
-        
-        // Aquí invocas a tu Modelo para ejecutar el INSERT SQL real
-        // const resultado = await PartituraModel.insertarNuevoUsuario(nombre, email, nivel_tecnico, estilo, link_portafolio);
-
-        // Respondemos a Postman confirmando que llegó la petición
-        res.status(201).json({ 
-            mensaje: 'Petición POST recibida correctamente', 
-            datosInsertados: req.body 
-        });
+        const resultado = await PartituraModel.insertarNuevoUsuario(nombre, email, nivel_tecnico, estilo, link_portafolio);
+        res.status(201).json({ mensaje: 'Usuario creado correctamente', id: resultado[0].insertId });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error al procesar la inserción' });
+    }
+};
+
+const crearPartitura = async (req, res) => {
+    try {
+        const { instrumentacion, id_obra, nombre, estilo, arreglo, arreglista, transcriptor, editor, url, info, precio } = req.body;
+        const resultado = await PartituraModel.insertarNuevaPartitura(instrumentacion, id_obra, nombre, estilo, arreglo, arreglista, transcriptor, editor, url, info, precio);
+        res.status(201).json({ mensaje: 'Partitura creada correctamente', id: resultado[0].insertId });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al crear partitura' });
+    }
+};
+
+const crearRating = async (req, res) => {
+    try {
+        const { id_usuario, valor, nivel_usuario, id_partitura } = req.body;
+        await PartituraModel.insertarRating(id_usuario, valor, nivel_usuario, id_partitura);
+        res.status(201).json({ mensaje: 'Rating creado correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al crear rating' });
     }
 };
 
