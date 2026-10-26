@@ -163,7 +163,7 @@ export default function PerfilPage() {
             <div className="level-progression-box">
               <div className="progression-metric-row font-mono text-xs">
                 <span>Nivel Base: {user.nivel_base.toFixed(1)}</span>
-                <span className="progression-delta" style={{ color: deltaNivel >= 0 ? '#059669' : '#DC2626' }}>
+                <span className="progression-delta" style={{ color: deltaNivel >= 0 ? 'var(--diff-principiante-dot, #059669)' : 'var(--diff-avanzado-dot, #DC2626)' }}>
                   {deltaNivel >= 0 ? `+${deltaNivel.toFixed(1)} acumulado` : `${deltaNivel.toFixed(1)}`}
                 </span>
               </div>
@@ -249,6 +249,7 @@ export default function PerfilPage() {
               <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path>
             </svg>
             <span>Editar Perfil & Seguridad</span>
+            <span className="tab-counter-badge">Ajustes</span>
           </button>
         </div>
 

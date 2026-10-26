@@ -77,8 +77,22 @@ export default function DetailModal() {
             </div>
 
             <div className="detail-hero-right">
-              <div className="hero-stat-card">
-                <span className="hero-stat-num font-mono">{partitura.totalRatings || 0}</span>
+              <div className="hero-stat-card" title={`${partitura.totalRatings || 0} calificaciones registradas por la comunidad`}>
+                <div className="hero-stat-rating-wrap">
+                  <svg
+                    className="hero-stat-star"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="#F59E0B"
+                    stroke="#D97706"
+                    strokeWidth="1.5"
+                    aria-hidden="true"
+                  >
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <span className="hero-stat-num font-mono">{partitura.totalRatings || 0}</span>
+                </div>
                 <span className="hero-stat-txt">Calificaciones de la comunidad</span>
               </div>
               <div className="hero-stat-card">
@@ -161,34 +175,44 @@ export default function DetailModal() {
           </div>
         </div>
 
-        {/* Footer de Acciones del Modal */}
+        {/* Footer de Acciones del Modal: Consistencia de Formato en Recuadros */}
         <div className="modal-actions-footer">
           <button
             type="button"
-            className={`btn-ghost ${isFavorito ? 'text-danger' : ''}`}
+            className={`btn-secondary ${isFavorito ? 'btn-favorite-active' : ''}`}
             onClick={() => toggleFavorito(partitura.id)}
+            title={isFavorito ? 'Quitar de guardados' : 'Guardar en Favoritos'}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill={isFavorito ? '#EF4444' : 'none'} stroke={isFavorito ? '#EF4444' : 'currentColor'} strokeWidth="2">
               <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
             </svg>
-            {isFavorito ? 'Guardado en Favoritos' : 'Guardar en Favoritos'}
+            <span>{isFavorito ? 'En Favoritos' : 'Guardar en Favoritos'}</span>
           </button>
 
           <button
             type="button"
             className="btn-secondary"
             onClick={handleOpenRating}
+            title="Calificar la dificultad relativa de esta obra"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
             </svg>
-            Calificar Dificultad (CU02)
+            <span>Calificar Dificultad (CU02)</span>
           </button>
 
           {isEnRepertorio ? (
-            <span className="repertory-status-tag">
-              ✓ Ya está en tu Repertorio
-            </span>
+            <button
+              type="button"
+              className="btn-in-repertory"
+              onClick={handleOpenRating}
+              title="Obra agregada a tu repertorio. Haz clic para recalibrar su dificultad."
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>En tu Repertorio</span>
+            </button>
           ) : (
             <button
               type="button"
@@ -197,12 +221,13 @@ export default function DetailModal() {
                 addToRepertorio(partitura.id);
                 setDetailModalPartitura(null);
               }}
+              title="Añadir a tus piezas aprendidas y recalcular tu nivel técnico"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-              Añadir a mi repertorio (CU01)
+              <span>Añadir a mi repertorio (CU01)</span>
             </button>
           )}
         </div>

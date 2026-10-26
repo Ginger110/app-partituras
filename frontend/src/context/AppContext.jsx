@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppContext } from './AppContextInstance';
 import {
   INITIAL_USER,
@@ -13,6 +13,20 @@ import {
 } from '../utils/difficultyUtils';
 
 export function AppProvider({ children }) {
+  // Modo Oscuro / Claro con persistencia en localStorage y detección de preferencia del SO
+  const [theme, setTheme] = useState(() => {
+    try {
+      const saved = localStorage.getItem('scorepulse_theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+    } catch {
+      // Fallback a modo claro
+    }
+    return 'light';
+  });
+
   // Estado de navegación
   const [currentView, setCurrentView] = useState('catalogo'); // 'catalogo' | 'perfil' | 'subir'
   const [profileTab, setProfileTab] = useState('repertorio'); // 'repertorio' | 'favoritos' | 'editar'
@@ -46,6 +60,28 @@ export function AppProvider({ children }) {
 
   const removeToast = (id) => {
     setToasts(prev => prev.filter(t => t.id !== id));
+  };
+
+  // Sincronizar tema con <html> y almacenamiento local
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    try {
+      localStorage.setItem('scorepulse_theme', theme);
+    } catch {
+      // Ignorar
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      addToast(
+        next === 'dark' ? 'Modo oscuro activado 🌙' : 'Modo claro activado ☀️',
+        'info',
+        2500
+      );
+      return next;
+    });
   };
 
   // CU01: Añadir al repertorio y recalcular nivel técnico dinámicamente
@@ -240,6 +276,9 @@ export function AppProvider({ children }) {
   return (
     <AppContext.Provider
       value={{
+        theme,
+        setTheme,
+        toggleTheme,
         currentView,
         setCurrentView,
         profileTab,
