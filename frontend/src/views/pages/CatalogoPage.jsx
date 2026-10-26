@@ -78,6 +78,7 @@ export default function CatalogoPage() {
   const handleResetFilters = () => {
     setFilters(initialFilters);
     setSearchTerm('');
+    setSortBy('popularidad');
   };
 
   const activeFiltersCount =
@@ -144,7 +145,7 @@ export default function CatalogoPage() {
 
       {/* 2. ZONA DE CONTENIDO PRINCIPAL: SIDEBAR DE FILTROS + GRILLA DE RESULTADOS */}
       <div className="catalogo-layout-container">
-        {/* Barra superior de control en la grilla (Ordenamiento + Botón Filtros Móvil) */}
+        {/* Barra superior de control en la grilla (Resumen de resultados y acceso unificado a Filtros/Orden) */}
         <div className="catalog-toolbar-row">
           <div className="toolbar-info">
             <span className="results-count-text">
@@ -158,45 +159,31 @@ export default function CatalogoPage() {
           </div>
 
           <div className="toolbar-actions">
-            {/* Botón para abrir filtros en Móvil / Tablet */}
+            {/* Botón para abrir el panel unificado de Filtrar y Ordenar en Móvil / Tablet */}
             <button
               type="button"
               className="btn-mobile-filter"
               onClick={() => setMobileDrawerOpen(true)}
-              aria-label="Abrir panel de filtros"
+              aria-label="Abrir panel unificado de filtrado y ordenamiento"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
               </svg>
-              <span>Filtrar</span>
+              <span>Filtrar y Ordenar</span>
               {activeFiltersCount > 0 && (
                 <span className="mobile-filter-counter">{activeFiltersCount}</span>
               )}
             </button>
-
-            {/* Selector de ordenamiento */}
-            <div className="sort-select-wrapper">
-              <label htmlFor="sort-select" className="sort-label">Ordenar por:</label>
-              <select
-                id="sort-select"
-                className="sort-select"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value="popularidad">Más valoradas / Populares</option>
-                <option value="dificultad_asc">Dificultad: Menor a Mayor</option>
-                <option value="dificultad_desc">Dificultad: Mayor a Menor</option>
-                <option value="recientes">Más recientes</option>
-              </select>
-            </div>
           </div>
         </div>
 
         <div className="catalogo-columns-wrapper">
-          {/* Panel de Filtros (Sidebar Izquierdo) */}
+          {/* Panel Unificado de Filtrado y Ordenamiento (Sidebar Izquierdo) */}
           <FilterSidebar
             filters={filters}
             setFilters={setFilters}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
             totalResults={filteredPartituras.length}
             onResetFilters={handleResetFilters}
             mobileDrawerOpen={mobileDrawerOpen}

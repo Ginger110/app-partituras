@@ -4,7 +4,15 @@
    ========================================================================== */
 
 :root {
-  /* Paleta Primaria & Superficies */
+  color-scheme: light;
+  /* ========================================================================
+     SISTEMA TRI-CROMÁTICO DE MARCA ScorePulse (3 Colores Armónicos WCAG AA)
+     1. Color Primario: Índigo Real (#4F46E5) - Acciones principales, marca
+     2. Color Secundario Neutro: Pizarra (#0F172A) - Tipografía, superficies
+     3. Color Terciario / Acento: Teal Turquesa Musical (#0D9488) - Énfasis, distinciones
+     ======================================================================== */
+
+  /* 1. Paleta Primaria (Índigo) */
   --primary-50: #EEF2FF;
   --primary-100: #E0E7FF;
   --primary-500: #6366F1;
@@ -12,13 +20,25 @@
   --primary-700: #4338CA;
   --primary-900: #312E81;
 
+  /* 2. Paleta Terciaria / Acento Armónico (Teal Turquesa Musical) */
+  --color-tertiary: #0D9488;
+  --tertiary-50: #F0FDFA;
+  --tertiary-100: #CCFBF1;
+  --tertiary-200: #99F6E4;
+  --tertiary-500: #14B8A6;
+  --tertiary-600: #0D9488;
+  --tertiary-700: #0F766E;
+  --tertiary-800: #115E59;
+
+  /* Superficies y Bordes */
   --bg-app: #F8FAFC;
   --surface-card: #FFFFFF;
   --surface-hover: #F1F5F9;
   --border-subtle: #E2E8F0;
+  --border-strong: #CBD5E1;
   --border-focus: #4F46E5;
 
-  /* Tipografía y Textos (Contraste alto WCAG AA > 4.5:1) */
+  /* 3. Tipografía y Textos (Contraste alto WCAG AA > 4.5:1) */
   --text-main: #0F172A;     /* Slate 900 (Contraste > 14:1 contra blanco) */
   --text-body: #1E293B;     /* Slate 800 */
   --text-muted: #475569;    /* Slate 600 (Contraste > 5.5:1 contra blanco) */
@@ -64,15 +84,95 @@
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.09), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
 
-  /* Radios de borde */
+  /* Radios de borde (Estándar Global: Botones REDONDEADAS --btn-radius) */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-full: 9999px;
+  --btn-radius: var(--radius-full); /* Forma estándar de botones: 100% redondeados (pill) */
 
   /* Tipografía */
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ==========================================================================
+   PALETA OFICIAL DE MODO OSCURO (SCOREPULSE DARK THEME - WCAG AA CERTIFICADO)
+   ========================================================================== */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* 1. Paleta Primaria en Modo Oscuro (Índigo adaptado con mayor luminosidad) */
+  --primary-50: rgba(99, 102, 241, 0.15);
+  --primary-100: rgba(99, 102, 241, 0.25);
+  --primary-500: #818CF8;
+  --primary-600: #6366F1;
+  --primary-700: #4F46E5;
+  --primary-900: #EEF2FF;
+
+  /* 2. Paleta Terciaria / Acento Armónico (Teal Turquesa Musical) */
+  --color-tertiary: #14B8A6;
+  --tertiary-50: rgba(20, 184, 166, 0.15);
+  --tertiary-100: rgba(20, 184, 166, 0.25);
+  --tertiary-200: #2DD4BF;
+  --tertiary-500: #2DD4BF;
+  --tertiary-600: #14B8A6;
+  --tertiary-700: #0D9488;
+  --tertiary-800: #99F6E4;
+
+  /* Superficies y Bordes Oscuros de Alto Contraste */
+  --bg-app: #0B0F19;
+  --surface-card: #151D2F;
+  --surface-hover: #1E293B;
+  --border-subtle: #243048;
+  --border-strong: #374765;
+  --border-focus: #818CF8;
+
+  /* 3. Tipografía y Textos en Modo Oscuro (WCAG AA alto contraste > 7:1) */
+  --text-main: #F8FAFC;     /* Slate 50 (Contraste > 15:1 contra #151D2F) */
+  --text-body: #E2E8F0;     /* Slate 200 (Contraste > 12:1) */
+  --text-muted: #94A3B8;    /* Slate 400 (Contraste > 6.2:1) */
+  --text-caption: #64748B;  /* Slate 500 */
+
+  /* Paleta Semántica de Dificultad Técnica (Modo Oscuro) */
+  --diff-principiante-bg: #064E3B;
+  --diff-principiante-text: #6EE7B7;
+  --diff-principiante-border: #059669;
+  --diff-principiante-dot: #34D399;
+
+  --diff-intermedio-bg: #451A03;
+  --diff-intermedio-text: #FCD34D;
+  --diff-intermedio-border: #B45309;
+  --diff-intermedio-dot: #FBBF24;
+
+  --diff-avanzado-bg: #450A0A;
+  --diff-avanzado-text: #FCA5A5;
+  --diff-avanzado-border: #B91C1C;
+  --diff-avanzado-dot: #F87171;
+
+  --diff-virtuoso-bg: #2E1065;
+  --diff-virtuoso-text: #DDD6FE;
+  --diff-virtuoso-border: #6D28D9;
+  --diff-virtuoso-dot: #A78BFA;
+
+  /* Estados de Feedback (Modo Oscuro) */
+  --success-bg: #064E3B;
+  --success-text: #A7F3D0;
+  --success-border: #059669;
+
+  --danger-bg: #450A0A;
+  --danger-text: #FECACA;
+  --danger-border: #B91C1C;
+
+  --info-bg: #172554;
+  --info-text: #BFDBFE;
+  --info-border: #2563EB;
+
+  /* Sombras optimizadas para Modo Oscuro */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.55), 0 2px 4px -2px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.65), 0 4px 6px -4px rgba(0, 0, 0, 0.45);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.75), 0 8px 10px -6px rgba(0, 0, 0, 0.55);
 }
 
 *, *::before, *::after {

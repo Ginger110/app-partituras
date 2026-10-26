@@ -4,45 +4,46 @@
  */
 
 // Escala semántica de niveles técnicos (1.0 a 10.0)
+// Emplea variables CSS con fallback para adaptarse dinámicamente al Modo Oscuro / Claro
 export const DIFFICULTY_TIERS = {
   PRINCIPIANTE: {
     min: 1.0,
     max: 3.4,
     label: 'Principiante',
-    badgeBg: '#ECFDF5',
-    badgeText: '#065F46',
-    badgeBorder: '#A7F3D0',
-    dotColor: '#10B981',
+    badgeBg: 'var(--diff-principiante-bg, #ECFDF5)',
+    badgeText: 'var(--diff-principiante-text, #065F46)',
+    badgeBorder: 'var(--diff-principiante-border, #A7F3D0)',
+    dotColor: 'var(--diff-principiante-dot, #10B981)',
     description: 'Nivel inicial: lectura básica, posiciones fijas, tempos moderados.'
   },
   INTERMEDIO: {
     min: 3.5,
     max: 5.9,
     label: 'Intermedio',
-    badgeBg: '#FFFBEB',
-    badgeText: '#92400E',
-    badgeBorder: '#FDE68A',
-    dotColor: '#F59E0B',
+    badgeBg: 'var(--diff-intermedio-bg, #FFFBEB)',
+    badgeText: 'var(--diff-intermedio-text, #92400E)',
+    badgeBorder: 'var(--diff-intermedio-border, #FDE68A)',
+    dotColor: 'var(--diff-intermedio-dot, #F59E0B)',
     description: 'Nivel medio: cambios de posición, dinámica expresiva, articulaciones variadas.'
   },
   AVANZADO: {
     min: 6.0,
     max: 8.4,
     label: 'Avanzado',
-    badgeBg: '#FEF2F2',
-    badgeText: '#991B1B',
-    badgeBorder: '#FECACA',
-    dotColor: '#EF4444',
+    badgeBg: 'var(--diff-avanzado-bg, #FEF2F2)',
+    badgeText: 'var(--diff-avanzado-text, #991B1B)',
+    badgeBorder: 'var(--diff-avanzado-border, #FECACA)',
+    dotColor: 'var(--diff-avanzado-dot, #EF4444)',
     description: 'Nivel avanzado: gran velocidad técnica, pasajes polifónicos, afinación exigente.'
   },
   VIRTUOSO: {
     min: 8.5,
     max: 10.0,
     label: 'Virtuoso',
-    badgeBg: '#F5F3FF',
-    badgeText: '#5B21B6',
-    badgeBorder: '#DDD6FE',
-    dotColor: '#8B5CF6',
+    badgeBg: 'var(--diff-virtuoso-bg, #F5F3FF)',
+    badgeText: 'var(--diff-virtuoso-text, #5B21B6)',
+    badgeBorder: 'var(--diff-virtuoso-border, #DDD6FE)',
+    dotColor: 'var(--diff-virtuoso-dot, #8B5CF6)',
     description: 'Nivel concierto: técnica trascendental, resistencia extrema, maestría interpretativa.'
   }
 };
