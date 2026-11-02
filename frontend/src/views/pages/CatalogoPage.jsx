@@ -1,11 +1,12 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from '../../context/useApp';
+import { api } from '../../models/services/api';
 import CardPartitura from '../components/CardPartitura';
 import FilterSidebar from '../components/FilterSidebar';
 import EmptyState from '../components/EmptyState';
 
 export default function CatalogoPage() {
-  const { partituras, uiState } = useApp();
+  const { uiState, facetas, catalogVersion } = useApp();
 
   // Estados de búsqueda y filtros
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,59 +22,42 @@ export default function CatalogoPage() {
 
   const [filters, setFilters] = useState(initialFilters);
 
-  // Filtrado reactivo con useMemo
-  const filteredPartituras = useMemo(() => {
-    // Si el UI State Switcher está en modo 'empty', forzamos lista vacía para captura
-    if (uiState === 'empty') {
-      return [];
-    }
+  // Búsqueda, filtros y orden: se consultan en la API (MongoDB) cada vez que cambian
+  const [resultados, setResultados] = useState([]);
+  const [buscando, setBuscando] = useState(true);
+  const [errorBusqueda, setErrorBusqueda] = useState(null);
 
-    return partituras.filter((p) => {
-      // 1. Filtro por término de búsqueda (Título, Obra o Compositor)
-      if (searchTerm.trim()) {
-        const query = searchTerm.toLowerCase();
-        const matchTitle = p.nombre.toLowerCase().includes(query);
-        const matchObra = (p.obra_nombre || '').toLowerCase().includes(query);
-        const matchComposer = (p.autor_obra || '').toLowerCase().includes(query);
-        const matchInstrument = p.instrumentacion.toLowerCase().includes(query);
-
-        if (!matchTitle && !matchObra && !matchComposer && !matchInstrument) {
-          return false;
+  useEffect(() => {
+    let cancelado = false;
+    const espera = setTimeout(async () => {
+      setBuscando(true);
+      try {
+        const datos = await api.partituras({
+          q: searchTerm.trim(),
+          instrumentos: filters.instrumentos,
+          estilos: filters.estilos,
+          maxDificultad: filters.maxDifficulty < 10.0 ? filters.maxDifficulty : undefined,
+          tipoPrecio: filters.tipoPrecio,
+          orden: sortBy
+        });
+        if (!cancelado) {
+          setResultados(datos);
+          setErrorBusqueda(null);
         }
+      } catch (e) {
+        if (!cancelado) setErrorBusqueda(e.message);
+      } finally {
+        if (!cancelado) setBuscando(false);
       }
+    }, 250);
+    return () => {
+      cancelado = true;
+      clearTimeout(espera);
+    };
+  }, [searchTerm, filters, sortBy, catalogVersion]);
 
-      // 2. Filtro por Dificultad Máxima
-      if (p.dificultadCalculada > filters.maxDifficulty) {
-        return false;
-      }
-
-      // 3. Filtro por Instrumentación
-      if (filters.instrumentos.length > 0) {
-        const matchesInstrument = filters.instrumentos.some(inst =>
-          p.instrumentacion.toLowerCase().includes(inst.toLowerCase().replace(' solo', ''))
-        );
-        if (!matchesInstrument) return false;
-      }
-
-      // 4. Filtro por Estilo / Época
-      if (filters.estilos.length > 0) {
-        if (!filters.estilos.includes(p.estilo)) {
-          return false;
-        }
-      }
-
-      // 5. Filtro por Precio
-      if (filters.tipoPrecio === 'gratis' && p.precio > 0) return false;
-      if (filters.tipoPrecio === 'pago' && p.precio === 0) return false;
-
-      return true;
-    }).sort((a, b) => {
-      if (sortBy === 'dificultad_asc') return a.dificultadCalculada - b.dificultadCalculada;
-      if (sortBy === 'dificultad_desc') return b.dificultadCalculada - a.dificultadCalculada;
-      if (sortBy === 'popularidad') return (b.totalRatings || 0) - (a.totalRatings || 0);
-      return b.id - a.id;
-    });
-  }, [partituras, searchTerm, filters, sortBy, uiState]);
+  // Si el UI State Switcher está en modo 'empty', forzamos lista vacía para captura
+  const filteredPartituras = uiState === 'empty' ? [] : resultados;
 
   const handleResetFilters = () => {
     setFilters(initialFilters);
@@ -180,6 +164,8 @@ export default function CatalogoPage() {
         <div className="catalogo-columns-wrapper">
           {/* Panel Unificado de Filtrado y Ordenamiento (Sidebar Izquierdo) */}
           <FilterSidebar
+            instrumentosOpciones={facetas.instrumentaciones}
+            estilosOpciones={facetas.estilos}
             filters={filters}
             setFilters={setFilters}
             sortBy={sortBy}
@@ -192,7 +178,11 @@ export default function CatalogoPage() {
 
           {/* Grilla de Resultados (Centro / Derecha) */}
           <main className="catalog-grid-main" aria-label="Resultados de partituras">
-            {filteredPartituras.length === 0 ? (
+            {filteredPartituras.length === 0 && buscando && uiState !== 'empty' ? (
+              <p role="status" className="results-count-text">Buscando partituras…</p>
+            ) : errorBusqueda && uiState !== 'empty' ? (
+              <p role="alert" className="results-count-text">No se pudo consultar el catálogo: {errorBusqueda}</p>
+            ) : filteredPartituras.length === 0 ? (
               <EmptyState
                 title="No encontramos partituras coincidentes"
                 description={

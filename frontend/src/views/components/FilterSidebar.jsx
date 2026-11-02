@@ -14,6 +14,8 @@ const ESTILOS_DISPONIBLES = [
 ];
 
 export default function FilterSidebar({
+  instrumentosOpciones = [],
+  estilosOpciones = [],
   filters,
   setFilters,
   sortBy,
@@ -23,6 +25,14 @@ export default function FilterSidebar({
   mobileDrawerOpen,
   setMobileDrawerOpen
 }) {
+  // Opciones y conteos vienen de la API (consulta con GROUP BY); si no hay, se usan las fijas
+  const opcionesInstrumentos = instrumentosOpciones.length
+    ? instrumentosOpciones
+    : INSTRUMENTOS_DISPONIBLES.map((valor) => ({ valor }));
+  const opcionesEstilos = estilosOpciones.length
+    ? estilosOpciones
+    : ESTILOS_DISPONIBLES.map((valor) => ({ valor }));
+
   const handleInstrumentChange = (inst) => {
     const exists = filters.instrumentos.includes(inst);
     const updated = exists
@@ -136,7 +146,7 @@ export default function FilterSidebar({
       <div className="filter-group">
         <span className="filter-group-title">Instrumentación</span>
         <div className="filter-checkbox-list">
-          {INSTRUMENTOS_DISPONIBLES.map((inst) => {
+          {opcionesInstrumentos.map(({ valor: inst, cantidad }) => {
             const isChecked = filters.instrumentos.includes(inst);
             return (
               <label key={inst} className="filter-checkbox-label">
@@ -147,6 +157,11 @@ export default function FilterSidebar({
                   className="filter-checkbox"
                 />
                 <span className="checkbox-text">{inst}</span>
+                {cantidad !== undefined && (
+                  <span className="filter-option-count" style={{ marginLeft: 'auto', opacity: 0.65, fontSize: '0.8em' }}>
+                    {cantidad}
+                  </span>
+                )}
               </label>
             );
           })}
@@ -157,7 +172,7 @@ export default function FilterSidebar({
       <div className="filter-group">
         <span className="filter-group-title">Época / Estilo / Género</span>
         <div className="filter-checkbox-list">
-          {ESTILOS_DISPONIBLES.map((estilo) => {
+          {opcionesEstilos.map(({ valor: estilo, cantidad }) => {
             const isChecked = filters.estilos.includes(estilo);
             return (
               <label key={estilo} className="filter-checkbox-label">
@@ -168,6 +183,11 @@ export default function FilterSidebar({
                   className="filter-checkbox"
                 />
                 <span className="checkbox-text">{estilo}</span>
+                {cantidad !== undefined && (
+                  <span className="filter-option-count" style={{ marginLeft: 'auto', opacity: 0.65, fontSize: '0.8em' }}>
+                    {cantidad}
+                  </span>
+                )}
               </label>
             );
           })}

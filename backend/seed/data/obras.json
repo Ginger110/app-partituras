@@ -1,0 +1,182 @@
+[
+  {
+    "_id": {
+      "$oid": "65a102000000000000000001"
+    },
+    "nombre": "Clair de lune",
+    "info": "Tercer movimiento de la Suite bergamasque, una de las piezas para piano más conocidas del repertorio impresionista.",
+    "estilo": "Impresionista",
+    "autor": "Claude Debussy",
+    "anno": 1905,
+    "version": null,
+    "autor_version": null,
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000001"
+      },
+      "nombre": "Camila Rojas"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a102000000000000000002"
+    },
+    "nombre": "The Entertainer",
+    "info": "Rag para piano publicado en 1902, emblema del ragtime norteamericano.",
+    "estilo": "Ragtime",
+    "autor": "Scott Joplin",
+    "anno": 1902,
+    "version": null,
+    "autor_version": null,
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000008"
+      },
+      "nombre": "Tomás Contreras"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a102000000000000000003"
+    },
+    "nombre": "Rhapsody in Blue",
+    "info": "Obra que fusiona jazz y música sinfónica, estrenada en 1924.",
+    "estilo": "Jazz",
+    "autor": "George Gershwin",
+    "anno": 1924,
+    "version": "Reducción para dos pianos",
+    "autor_version": "Pedro Vidal",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000002"
+      },
+      "nombre": "Diego Fuentes"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a102000000000000000004"
+    },
+    "nombre": "Libertango",
+    "info": "Tango nuevo que marcó el paso de Piazzolla del tango tradicional a una forma más contemporánea.",
+    "estilo": "Tango",
+    "autor": "Astor Piazzolla",
+    "anno": 1974,
+    "version": "Versión para cuarteto de cuerdas",
+    "autor_version": "Lucía Herrera",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000004"
+      },
+      "nombre": "Matías Herrera"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a102000000000000000005"
+    },
+    "nombre": "Gracias a la vida",
+    "info": "Canción emblemática de la música popular chilena y latinoamericana.",
+    "estilo": "Folclore",
+    "autor": "Violeta Parra",
+    "anno": 1966,
+    "version": null,
+    "autor_version": null,
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000003"
+      },
+      "nombre": "Valentina Soto"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a102000000000000000006"
+    },
+    "nombre": "Garota de Ipanema",
+    "info": "Clásico de la bossa nova, convertido en estándar de jazz.",
+    "estilo": "Bossa nova",
+    "autor": "Antonio Carlos Jobim",
+    "anno": 1962,
+    "version": "Arreglo para quinteto de jazz",
+    "autor_version": "Diego Fuentes",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000007"
+      },
+      "nombre": "Francisca Araya"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a102000000000000000007"
+    },
+    "nombre": "Bachianas Brasileiras No. 5",
+    "info": "Obra que combina la escritura barroca de Bach con el lirismo brasileño.",
+    "estilo": "Neoclásico",
+    "autor": "Heitor Villa-Lobos",
+    "anno": 1938,
+    "version": null,
+    "autor_version": null,
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000006"
+      },
+      "nombre": "Sebastián Vidal"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a102000000000000000008"
+    },
+    "nombre": "Vocalise Op. 34 No. 14",
+    "info": "Pieza lírica sin texto, muy interpretada en versiones instrumentales.",
+    "estilo": "Romántico",
+    "autor": "Sergei Rachmaninoff",
+    "anno": 1912,
+    "version": "Versión para violín y piano",
+    "autor_version": "Ana Morales",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000005"
+      },
+      "nombre": "Javiera Muñoz"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a102000000000000000009"
+    },
+    "nombre": "Por una cabeza",
+    "info": "Tango de Carlos Gardel y Alfredo Le Pera, compuesto para el cine.",
+    "estilo": "Tango",
+    "autor": "Carlos Gardel",
+    "anno": 1935,
+    "version": null,
+    "autor_version": null,
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000004"
+      },
+      "nombre": "Matías Herrera"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10200000000000000000a"
+    },
+    "nombre": "La Catedral",
+    "info": "Obra para guitarra en tres movimientos, una de las más importantes del repertorio guitarrístico latinoamericano.",
+    "estilo": "Clásico",
+    "autor": "Agustín Barrios",
+    "anno": 1921,
+    "version": null,
+    "autor_version": null,
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000006"
+      },
+      "nombre": "Sebastián Vidal"
+    }
+  }
+]

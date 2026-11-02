@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../../context/useApp';
 import BadgeDificultad from './BadgeDificultad';
-import { getDifficultyTier, calcularDificultadDinamica } from '../../utils/difficultyUtils';
+import { getDifficultyTier, simularDificultadConSumas } from '../../utils/difficultyUtils';
 
 export default function RatingModal() {
   const {
@@ -40,10 +40,7 @@ export default function RatingModal() {
   const partitura = ratingModalPartitura;
 
   // Simulación en tiempo real de cómo impactaría esta calificación en la obra
-  const simulatedNewDifficulty = calcularDificultadDinamica(
-    partitura.dificultadEstimada,
-    [...(partitura.ratings || []), { id_usuario: user.id, nivel_usuario: user.nivel_tecnico, valor: selectedValue }]
-  );
+  const simulatedNewDifficulty = simularDificultadConSumas(partitura, user.nivel_tecnico, selectedValue);
 
   const handleSubmit = (e) => {
     e.preventDefault();

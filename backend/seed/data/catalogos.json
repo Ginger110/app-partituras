@@ -1,0 +1,247 @@
+[
+  {
+    "_id": {
+      "$oid": "65a10300000000000000000b"
+    },
+    "nombre": "Piano esencial",
+    "instrumento": "Piano",
+    "estilo": "Clásico",
+    "autor": "Camila Rojas",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000001"
+      },
+      "nombre": "Camila Rojas"
+    },
+    "partituras": [
+      {
+        "_id": {
+          "$oid": "65a104000000000000000001"
+        },
+        "nombre": "Clair de lune - Edición original"
+      },
+      {
+        "_id": {
+          "$oid": "65a104000000000000000002"
+        },
+        "nombre": "Clair de lune - Cuatro manos"
+      },
+      {
+        "_id": {
+          "$oid": "65a104000000000000000004"
+        },
+        "nombre": "Rhapsody in Blue - Dos pianos"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "65a10300000000000000000c"
+    },
+    "nombre": "Jazz para principiantes",
+    "instrumento": "Piano",
+    "estilo": "Jazz",
+    "autor": "Diego Fuentes",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000002"
+      },
+      "nombre": "Diego Fuentes"
+    },
+    "partituras": [
+      {
+        "_id": {
+          "$oid": "65a104000000000000000003"
+        },
+        "nombre": "The Entertainer"
+      },
+      {
+        "_id": {
+          "$oid": "65a104000000000000000008"
+        },
+        "nombre": "Garota de Ipanema - Quinteto"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "65a10300000000000000000d"
+    },
+    "nombre": "Cancionero chileno",
+    "instrumento": "Guitarra",
+    "estilo": "Folclore",
+    "autor": "Valentina Soto",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000003"
+      },
+      "nombre": "Valentina Soto"
+    },
+    "partituras": [
+      {
+        "_id": {
+          "$oid": "65a104000000000000000007"
+        },
+        "nombre": "Gracias a la vida - Voz y guitarra"
+      },
+      {
+        "_id": {
+          "$oid": "65a10400000000000000000d"
+        },
+        "nombre": "Gracias a la vida - Voz y piano"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "65a10300000000000000000e"
+    },
+    "nombre": "Tango en cuerdas",
+    "instrumento": "Cuarteto de cuerdas",
+    "estilo": "Tango",
+    "autor": "Matías Herrera",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000004"
+      },
+      "nombre": "Matías Herrera"
+    },
+    "partituras": [
+      {
+        "_id": {
+          "$oid": "65a104000000000000000005"
+        },
+        "nombre": "Libertango - Partitura general"
+      },
+      {
+        "_id": {
+          "$oid": "65a104000000000000000006"
+        },
+        "nombre": "Libertango - Partes separadas"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "65a10300000000000000000f"
+    },
+    "nombre": "Románticos para violín",
+    "instrumento": "Violín",
+    "estilo": "Romántico",
+    "autor": "Javiera Muñoz",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000005"
+      },
+      "nombre": "Javiera Muñoz"
+    },
+    "partituras": [
+      {
+        "_id": {
+          "$oid": "65a10400000000000000000a"
+        },
+        "nombre": "Vocalise Op. 34 No. 14"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "65a103000000000000000010"
+    },
+    "nombre": "Guitarra latinoamericana",
+    "instrumento": "Guitarra clásica",
+    "estilo": "Clásico",
+    "autor": "Sebastián Vidal",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000006"
+      },
+      "nombre": "Sebastián Vidal"
+    },
+    "partituras": [
+      {
+        "_id": {
+          "$oid": "65a10400000000000000000b"
+        },
+        "nombre": "Por una cabeza"
+      },
+      {
+        "_id": {
+          "$oid": "65a10400000000000000000c"
+        },
+        "nombre": "La Catedral - Tres movimientos"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "65a103000000000000000011"
+    },
+    "nombre": "Bossa nova esencial",
+    "instrumento": "Conjunto de jazz",
+    "estilo": "Bossa nova",
+    "autor": "Francisca Araya",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000007"
+      },
+      "nombre": "Francisca Araya"
+    },
+    "partituras": [
+      {
+        "_id": {
+          "$oid": "65a104000000000000000008"
+        },
+        "nombre": "Garota de Ipanema - Quinteto"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "65a103000000000000000012"
+    },
+    "nombre": "Ragtime y estilo stride",
+    "instrumento": "Piano",
+    "estilo": "Ragtime",
+    "autor": "Tomás Contreras",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000008"
+      },
+      "nombre": "Tomás Contreras"
+    },
+    "partituras": []
+  },
+  {
+    "_id": {
+      "$oid": "65a103000000000000000013"
+    },
+    "nombre": "Voz y guitarra",
+    "instrumento": "Voz y guitarra",
+    "estilo": "Folclore",
+    "autor": "Constanza Pizarro",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a101000000000000000009"
+      },
+      "nombre": "Constanza Pizarro"
+    },
+    "partituras": []
+  },
+  {
+    "_id": {
+      "$oid": "65a103000000000000000014"
+    },
+    "nombre": "Standards de jazz",
+    "instrumento": "Conjunto de jazz",
+    "estilo": "Jazz",
+    "autor": "Nicolás Bravo",
+    "subido_por": {
+      "_id": {
+        "$oid": "65a10100000000000000000a"
+      },
+      "nombre": "Nicolás Bravo"
+    },
+    "partituras": []
+  }
+]

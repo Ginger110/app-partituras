@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import { AppContext } from './AppContextInstance';
-import {
-  INITIAL_USER,
-  INITIAL_OBRAS,
-  INITIAL_PARTITURAS,
-  INITIAL_REPERTORIO,
-  INITIAL_FAVORITOS
-} from '../models/mockData';
-import {
-  calcularDificultadDinamica,
-  recalcularNivelUsuario
-} from '../utils/difficultyUtils';
+import { api } from '../models/services/api';
+
+// Consulta a la API todo lo que necesita la app al iniciar
+function obtenerDatosIniciales() {
+  return Promise.all([
+    api.usuarioActual(),
+    api.obras(),
+    api.partituras(),
+    api.repertorio(),
+    api.favoritos(),
+    api.facetas()
+  ]);
+}
 
 export function AppProvider({ children }) {
   // Modo Oscuro / Claro con persistencia en localStorage y detección de preferencia del SO
@@ -31,12 +33,18 @@ export function AppProvider({ children }) {
   const [currentView, setCurrentView] = useState('catalogo'); // 'catalogo' | 'perfil' | 'subir'
   const [profileTab, setProfileTab] = useState('repertorio'); // 'repertorio' | 'favoritos' | 'editar'
 
-  // Datos principales
-  const [user, setUser] = useState(INITIAL_USER);
-  const [obras, setObras] = useState(INITIAL_OBRAS);
-  const [partituras, setPartituras] = useState(INITIAL_PARTITURAS);
-  const [repertorio, setRepertorio] = useState(INITIAL_REPERTORIO);
-  const [favoritos, setFavoritos] = useState(INITIAL_FAVORITOS);
+  // Datos principales (vienen de la API / MongoDB)
+  const [user, setUser] = useState(null);
+  const [obras, setObras] = useState([]);
+  const [partituras, setPartituras] = useState([]);
+  const [repertorio, setRepertorio] = useState([]);
+  const [favoritos, setFavoritos] = useState([]);
+  const [facetas, setFacetas] = useState({ instrumentaciones: [], estilos: [] });
+
+  // Estado de la carga inicial y versión del catálogo (se incrementa cuando los datos cambian)
+  const [cargando, setCargando] = useState(true);
+  const [errorCarga, setErrorCarga] = useState(null);
+  const [catalogVersion, setCatalogVersion] = useState(0);
 
   // Estados de demostración para evaluación UI/UX (UI State Switcher)
   // 'normal' | 'empty' | 'error' | 'feedback'
@@ -62,6 +70,46 @@ export function AppProvider({ children }) {
     setToasts(prev => prev.filter(t => t.id !== id));
   };
 
+  // Carga inicial desde la API
+  const aplicarDatosIniciales = ([u, listaObras, listaPartituras, listaRepertorio, listaFavoritos, opciones]) => {
+    setUser(u);
+    setObras(listaObras);
+    setPartituras(listaPartituras);
+    setRepertorio(listaRepertorio);
+    setFavoritos(listaFavoritos);
+    setFacetas(opciones);
+    setCargando(false);
+  };
+
+  useEffect(() => {
+    let cancelado = false;
+    obtenerDatosIniciales()
+      .then((datos) => {
+        if (!cancelado) aplicarDatosIniciales(datos);
+      })
+      .catch((e) => {
+        if (!cancelado) {
+          setErrorCarga(e.message);
+          setCargando(false);
+        }
+      });
+    return () => {
+      cancelado = true;
+    };
+  }, []);
+
+  // Botón "Reintentar" de la pantalla de error
+  const reintentarCarga = () => {
+    setCargando(true);
+    setErrorCarga(null);
+    obtenerDatosIniciales()
+      .then(aplicarDatosIniciales)
+      .catch((e) => {
+        setErrorCarga(e.message);
+        setCargando(false);
+      });
+  };
+
   // Sincronizar tema con <html> y almacenamiento local
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -84,8 +132,15 @@ export function AppProvider({ children }) {
     });
   };
 
-  // CU01: Añadir al repertorio y recalcular nivel técnico dinámicamente
-  const addToRepertorio = (partituraId) => {
+  // Reemplaza una partitura actualizada en todas las listas en memoria
+  const reemplazarPartitura = (actualizada) => {
+    setPartituras(prev => prev.map(p => (p.id === actualizada.id ? actualizada : p)));
+    setFavoritos(prev => prev.map(f => (f.id === actualizada.id ? actualizada : f)));
+    setRepertorio(prev => prev.map(r => (r.id === actualizada.id ? { ...r, ...actualizada } : r)));
+  };
+
+  // CU01: Añadir al repertorio y recalcular nivel técnico (el cálculo lo hace el backend)
+  const addToRepertorio = async (partituraId) => {
     const found = partituras.find(p => p.id === partituraId);
     if (!found) return;
 
@@ -94,168 +149,104 @@ export function AppProvider({ children }) {
       return;
     }
 
-    const itemNuevo = {
-      ...found,
-      fecha_agregado: new Date().toISOString().split('T')[0],
-      estado_dominio: 'Dominada',
-      calificado: false,
-      mi_calificacion: null
-    };
-
-    const nuevoRepertorio = [itemNuevo, ...repertorio];
-    setRepertorio(nuevoRepertorio);
-
-    // Recálculo del Nivel Técnico del Usuario
-    const nivelAnterior = user.nivel_tecnico;
-    const resultado = recalcularNivelUsuario(user.nivel_base, nuevoRepertorio);
-    setUser(prev => ({ ...prev, nivel_tecnico: resultado.nuevoNivel }));
-
-    addToast(
-      `¡Partitura añadida a tu repertorio! Tu nivel técnico se actualizó de ${nivelAnterior.toFixed(1)} a ${resultado.nuevoNivel.toFixed(1)} (${resultado.delta >= 0 ? '+' : ''}${resultado.delta.toFixed(1)}).`,
-      'success',
-      6000
-    );
+    try {
+      const r = await api.agregarRepertorio(partituraId);
+      setRepertorio(prev => [r.item, ...prev]);
+      setUser(r.usuario);
+      addToast(
+        `¡Partitura añadida a tu repertorio! Tu nivel técnico se actualizó de ${r.nivelAnterior.toFixed(1)} a ${r.nuevoNivel.toFixed(1)} (${r.delta >= 0 ? '+' : ''}${r.delta.toFixed(1)}).`,
+        'success',
+        6000
+      );
+    } catch (e) {
+      addToast(e.status === 409 ? `"${found.nombre}" ya está en tu repertorio.` : e.message, e.status === 409 ? 'info' : 'error');
+    }
   };
 
   // Eliminar del repertorio
-  const removeFromRepertorio = (partituraId) => {
+  const removeFromRepertorio = async (partituraId) => {
     const item = repertorio.find(r => r.id === partituraId);
-    const nuevoRepertorio = repertorio.filter(r => r.id !== partituraId);
-    setRepertorio(nuevoRepertorio);
-
-    const resultado = recalcularNivelUsuario(user.nivel_base, nuevoRepertorio);
-    setUser(prev => ({ ...prev, nivel_tecnico: resultado.nuevoNivel }));
-
-    addToast(`"${item?.nombre || 'Obra'}" retirada del repertorio. Nivel ajustado a ${resultado.nuevoNivel.toFixed(1)}.`, 'info');
+    try {
+      const r = await api.quitarRepertorio(partituraId);
+      setRepertorio(prev => prev.filter(x => x.id !== partituraId));
+      setUser(r.usuario);
+      addToast(`"${item?.nombre || 'Obra'}" retirada del repertorio. Nivel ajustado a ${r.nuevoNivel.toFixed(1)}.`, 'info');
+    } catch (e) {
+      addToast(e.message, 'error');
+    }
   };
 
   // Alternar favoritos
-  const toggleFavorito = (partituraId) => {
-    const found = partituras.find(p => p.id === partituraId);
+  const toggleFavorito = async (partituraId) => {
+    const found = partituras.find(p => p.id === partituraId) || favoritos.find(f => f.id === partituraId);
     if (!found) return;
 
-    if (favoritos.some(f => f.id === partituraId)) {
-      setFavoritos(prev => prev.filter(f => f.id !== partituraId));
-      addToast(`"${found.nombre}" eliminada de tus guardados.`, 'info');
-    } else {
-      setFavoritos(prev => [found, ...prev]);
-      addToast(`"${found.nombre}" guardada en Favoritos para aprender luego.`, 'success');
+    try {
+      if (favoritos.some(f => f.id === partituraId)) {
+        await api.quitarFavorito(partituraId);
+        setFavoritos(prev => prev.filter(f => f.id !== partituraId));
+        addToast(`"${found.nombre}" eliminada de tus guardados.`, 'info');
+      } else {
+        const guardada = await api.agregarFavorito(partituraId);
+        setFavoritos(prev => [guardada, ...prev]);
+        addToast(`"${found.nombre}" guardada en Favoritos para aprender luego.`, 'success');
+      }
+    } catch (e) {
+      addToast(e.message, 'error');
     }
   };
 
-  // CU02: Calificar Dificultad Relativa de una Partitura
-  const submitRating = (partituraId, relativeValue) => {
-    const partitura = partituras.find(p => p.id === partituraId);
-    if (!partitura) return;
+  // CU02: Calificar Dificultad Relativa de una Partitura (el recálculo bayesiano lo hace el backend)
+  const submitRating = async (partituraId, relativeValue) => {
+    try {
+      const r = await api.calificar(partituraId, relativeValue);
 
-    const dificultadPrevia = partitura.dificultadCalculada;
-    const nuevoRating = {
-      id_usuario: user.id,
-      nivel_usuario: user.nivel_tecnico,
-      valor: relativeValue // -1, 0, 1
-    };
+      reemplazarPartitura(r.partitura);
+      setRepertorio(prev => prev.map(item => (
+        item.id === partituraId ? { ...item, calificado: true, mi_calificacion: relativeValue } : item
+      )));
+      setCatalogVersion(v => v + 1);
 
-    const nuevosRatings = [...(partitura.ratings || []), nuevoRating];
-    const nuevaDificultad = calcularDificultadDinamica(partitura.dificultadEstimada, nuevosRatings);
+      const textoValor = relativeValue === -1
+        ? 'Menos exigente que tu nivel'
+        : relativeValue === 0
+        ? 'Igual a tu nivel'
+        : 'Más exigente que tu nivel';
 
-    // Actualizar catálogo
-    setPartituras(prev => prev.map(p => {
-      if (p.id === partituraId) {
-        return {
-          ...p,
-          ratings: nuevosRatings,
-          totalRatings: (p.totalRatings || 0) + 1,
-          dificultadCalculada: nuevaDificultad
-        };
-      }
-      return p;
-    }));
-
-    // Actualizar en repertorio si está ahí
-    setRepertorio(prev => prev.map(r => {
-      if (r.id === partituraId) {
-        return {
-          ...r,
-          calificado: true,
-          mi_calificacion: relativeValue,
-          dificultadCalculada: nuevaDificultad,
-          totalRatings: (r.totalRatings || 0) + 1
-        };
-      }
-      return r;
-    }));
-
-    // Mensaje de éxito con cálculo visible
-    const textoValor = relativeValue === -1
-      ? 'Menos exigente que tu nivel'
-      : relativeValue === 0
-      ? 'Igual a tu nivel'
-      : 'Más exigente que tu nivel';
-
-    addToast(
-      `Calificación registrada ("${textoValor}"). Dificultad dinámica recalculada: ${dificultadPrevia.toFixed(1)} ➔ ${nuevaDificultad.toFixed(1)}.`,
-      'success',
-      6000
-    );
-
-    setRatingModalPartitura(null);
+      addToast(
+        `Calificación registrada ("${textoValor}"). Dificultad dinámica recalculada: ${r.dificultadPrevia.toFixed(1)} ➔ ${r.dificultadNueva.toFixed(1)}.`,
+        'success',
+        6000
+      );
+      setRatingModalPartitura(null);
+    } catch (e) {
+      addToast(e.message, 'error');
+    }
   };
 
   // CU03: Agregar Nueva Partitura / Arreglo
-  const createPartitura = (data) => {
-    let obraId = data.id_obra;
-    let obraNombre = '';
-    let obraAutor = '';
-
-    if (data.modo === 'obra_nueva') {
-      const nuevaObra = {
-        id: obras.length + 1,
-        nombre: data.nombre_obra,
-        autor: data.autor_obra,
-        epoca: data.estilo
-      };
-      setObras(prev => [...prev, nuevaObra]);
-      obraId = nuevaObra.id;
-      obraNombre = nuevaObra.nombre;
-      obraAutor = nuevaObra.autor;
-    } else {
-      const obraExistente = obras.find(o => o.id === parseInt(data.id_obra, 10));
-      obraNombre = obraExistente?.nombre || 'Obra seleccionada';
-      obraAutor = obraExistente?.autor || 'Compositor';
+  const createPartitura = async (data) => {
+    try {
+      const r = await api.crearPartitura(data);
+      setPartituras(prev => [r.partitura, ...prev]);
+      if (r.obra_creada) setObras(await api.obras());
+      setFacetas(await api.facetas());
+      setCatalogVersion(v => v + 1);
+      addToast(`¡"${r.partitura.nombre}" publicada con éxito en el Catálogo!`, 'success');
+      setCurrentView('catalogo');
+    } catch (e) {
+      addToast(e.message, 'error');
     }
-
-    const nuevaPartitura = {
-      id: Date.now(),
-      id_obra: obraId,
-      nombre: data.nombre_partitura || `${obraNombre} (${data.instrumentacion})`,
-      obra_nombre: obraNombre,
-      autor_obra: obraAutor,
-      instrumentacion: data.instrumentacion,
-      estilo: data.estilo,
-      arreglo: data.arreglo || 'Versión estándar',
-      arreglista: data.arreglista || obraAutor,
-      transcriptor: data.transcriptor || user.nombre,
-      editor: data.editor || 'Comunidad Symphonia',
-      url: data.url,
-      info: data.info || 'Aportado por usuario.',
-      precio: parseInt(data.precio || 0, 10),
-      dificultadEstimada: parseFloat(data.dificultadEstimada || 4.0),
-      dificultadCalculada: parseFloat(data.dificultadEstimada || 4.0),
-      totalRatings: 1,
-      ratings: [
-        { id_usuario: user.id, nivel_usuario: user.nivel_tecnico, valor: 0 }
-      ]
-    };
-
-    setPartituras(prev => [nuevaPartitura, ...prev]);
-    addToast(`¡"${nuevaPartitura.nombre}" publicada con éxito en el Catálogo!`, 'success');
-    setCurrentView('catalogo');
   };
 
   // Actualizar datos del usuario
-  const updateUserProfile = (updatedFields) => {
-    setUser(prev => ({ ...prev, ...updatedFields }));
-    addToast('Perfil actualizado correctamente.', 'success');
+  const updateUserProfile = async (updatedFields) => {
+    try {
+      setUser(await api.actualizarPerfil(updatedFields));
+      addToast('Perfil actualizado correctamente.', 'success');
+    } catch (e) {
+      addToast(e.status === 409 ? 'Ese correo electrónico ya está en uso.' : e.message, 'error');
+    }
   };
 
   // Control directo desde el UI State Switcher para demostración en la evaluación
@@ -289,6 +280,11 @@ export function AppProvider({ children }) {
         partituras,
         repertorio,
         favoritos,
+        facetas,
+        cargando,
+        errorCarga,
+        reintentarCarga,
+        catalogVersion,
         uiState,
         setUiState: handleSetUiState,
         ratingModalPartitura,

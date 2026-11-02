@@ -98,6 +98,21 @@ export function calcularDificultadDinamica(dificultadInicial, ratings = []) {
 }
 
 /**
+ * Simula la dificultad resultante de un nuevo rating usando las sumas que guarda el backend
+ * (suma_ponderada y suma_pesos). Equivale a calcularDificultadDinamica sin necesidad de
+ * descargar todos los ratings de la partitura.
+ */
+export function simularDificultadConSumas(partitura, nivelUsuario, valor) {
+  const sumas = partitura.dificultadSumas;
+  if (!sumas || !sumas.suma_pesos) return partitura.dificultadCalculada;
+  const delta = 0.8;
+  const dificultadPercibida = Math.min(10, Math.max(1, nivelUsuario + (valor * delta)));
+  const pesoUsuario = Math.max(0.8, Math.min(2.0, nivelUsuario / 5.0));
+  const resultado = (sumas.suma_ponderada + dificultadPercibida * pesoUsuario) / (sumas.suma_pesos + pesoUsuario);
+  return Math.round(Math.min(10.0, Math.max(1.0, resultado)) * 10) / 10;
+}
+
+/**
  * Recalcula el Nivel Técnico Actual del Usuario a partir de su repertorio aprendido
  * 
  * @param {number} nivelBase - Nivel inicial autodeclarado
