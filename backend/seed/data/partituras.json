@@ -1,0 +1,418 @@
+[
+  {
+    "_id": {
+      "$oid": "65a104000000000000000001"
+    },
+    "nombre": "Clair de lune - Edición original",
+    "estilo": "Impresionista",
+    "instrumentacion": "Piano solo",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000001"
+      },
+      "nombre": "Clair de lune",
+      "autor": "Claude Debussy"
+    },
+    "arreglo": null,
+    "arreglista": null,
+    "transcriptor": null,
+    "editor": "Ediciones Sur",
+    "url": "https://partituras.example.com/pdf/clair-de-lune-original.pdf",
+    "info": "Edición completa para piano solo con digitaciones sugeridas.",
+    "precio": 3990,
+    "dificultad": {
+      "estimada": 5.0,
+      "calculada": 6.6,
+      "suma_ponderada": 40.33,
+      "suma_pesos": 6.1,
+      "total_ratings": 2
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a104000000000000000002"
+    },
+    "nombre": "Clair de lune - Cuatro manos",
+    "estilo": "Impresionista",
+    "instrumentacion": "Piano a cuatro manos",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000001"
+      },
+      "nombre": "Clair de lune",
+      "autor": "Claude Debussy"
+    },
+    "arreglo": "Versión a cuatro manos",
+    "arreglista": "Ana Morales",
+    "transcriptor": null,
+    "editor": "Ediciones Sur",
+    "url": "https://partituras.example.com/pdf/clair-de-lune-cuatro-manos.pdf",
+    "info": "Adaptación para dos intérpretes en un mismo piano, nivel intermedio.",
+    "precio": 2490,
+    "dificultad": {
+      "estimada": 4.5,
+      "calculada": 4.0,
+      "suma_ponderada": 18.220000000000002,
+      "suma_pesos": 4.6,
+      "total_ratings": 2
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a104000000000000000003"
+    },
+    "nombre": "The Entertainer",
+    "estilo": "Ragtime",
+    "instrumentacion": "Piano solo",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000002"
+      },
+      "nombre": "The Entertainer",
+      "autor": "Scott Joplin"
+    },
+    "arreglo": null,
+    "arreglista": null,
+    "transcriptor": "Tomás Contreras",
+    "editor": "Editorial Ragtime Chile",
+    "url": "https://partituras.example.com/pdf/the-entertainer.pdf",
+    "info": "Transcripción fiel con indicaciones de estilo ragtime.",
+    "precio": 2990,
+    "dificultad": {
+      "estimada": 4.5,
+      "calculada": 5.9,
+      "suma_ponderada": 26.916,
+      "suma_pesos": 4.5600000000000005,
+      "total_ratings": 1
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a104000000000000000004"
+    },
+    "nombre": "Rhapsody in Blue - Dos pianos",
+    "estilo": "Jazz",
+    "instrumentacion": "Dos pianos",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000003"
+      },
+      "nombre": "Rhapsody in Blue",
+      "autor": "George Gershwin"
+    },
+    "arreglo": "Reducción para dos pianos",
+    "arreglista": "Pedro Vidal",
+    "transcriptor": null,
+    "editor": "Ediciones Sur",
+    "url": "https://partituras.example.com/pdf/rhapsody-dos-pianos.pdf",
+    "info": "Reducción orquestal para dos pianos, dificultad avanzada.",
+    "precio": 5990,
+    "dificultad": {
+      "estimada": 8.0,
+      "calculada": 8.8,
+      "suma_ponderada": 44.0,
+      "suma_pesos": 5.0,
+      "total_ratings": 1
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a104000000000000000005"
+    },
+    "nombre": "Libertango - Partitura general",
+    "estilo": "Tango",
+    "instrumentacion": "Cuarteto de cuerdas",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000004"
+      },
+      "nombre": "Libertango",
+      "autor": "Astor Piazzolla"
+    },
+    "arreglo": "Versión para cuarteto",
+    "arreglista": "Lucía Herrera",
+    "transcriptor": null,
+    "editor": "Cuerdas del Sur",
+    "url": "https://partituras.example.com/pdf/libertango-general.pdf",
+    "info": "Partitura general del arreglo para dos violines, viola y violonchelo.",
+    "precio": 4490,
+    "dificultad": {
+      "estimada": 5.5,
+      "calculada": 6.3,
+      "suma_ponderada": 28.668,
+      "suma_pesos": 4.5600000000000005,
+      "total_ratings": 1
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a104000000000000000006"
+    },
+    "nombre": "Libertango - Partes separadas",
+    "estilo": "Tango",
+    "instrumentacion": "Cuarteto de cuerdas",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000004"
+      },
+      "nombre": "Libertango",
+      "autor": "Astor Piazzolla"
+    },
+    "arreglo": "Versión para cuarteto",
+    "arreglista": "Lucía Herrera",
+    "transcriptor": null,
+    "editor": "Cuerdas del Sur",
+    "url": "https://partituras.example.com/pdf/libertango-partes.pdf",
+    "info": "Partes individuales para cada instrumento del cuarteto.",
+    "precio": 3490,
+    "dificultad": {
+      "estimada": 5.5,
+      "calculada": 5.5,
+      "suma_ponderada": 16.5,
+      "suma_pesos": 3,
+      "total_ratings": 0
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a104000000000000000007"
+    },
+    "nombre": "Gracias a la vida - Voz y guitarra",
+    "estilo": "Folclore",
+    "instrumentacion": "Voz y guitarra",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000005"
+      },
+      "nombre": "Gracias a la vida",
+      "autor": "Violeta Parra"
+    },
+    "arreglo": null,
+    "arreglista": null,
+    "transcriptor": "Rodrigo Soto",
+    "editor": "Cancionero Andino",
+    "url": "https://partituras.example.com/pdf/gracias-a-la-vida-guitarra.pdf",
+    "info": "Melodía con acordes cifrados para voz y guitarra.",
+    "precio": 2490,
+    "dificultad": {
+      "estimada": 3.0,
+      "calculada": 3.2,
+      "suma_ponderada": 12.28,
+      "suma_pesos": 3.8,
+      "total_ratings": 1
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a104000000000000000008"
+    },
+    "nombre": "Garota de Ipanema - Quinteto",
+    "estilo": "Bossa nova",
+    "instrumentacion": "Quinteto de jazz",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000006"
+      },
+      "nombre": "Garota de Ipanema",
+      "autor": "Antonio Carlos Jobim"
+    },
+    "arreglo": "Arreglo para quinteto de jazz",
+    "arreglista": "Diego Fuentes",
+    "transcriptor": null,
+    "editor": "Jazz Austral",
+    "url": "https://partituras.example.com/pdf/garota-quinteto.pdf",
+    "info": "Incluye partes de saxo, guitarra, piano, contrabajo y batería.",
+    "precio": 4990,
+    "dificultad": {
+      "estimada": 6.0,
+      "calculada": 6.1,
+      "suma_ponderada": 24.93,
+      "suma_pesos": 4.1,
+      "total_ratings": 1
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a104000000000000000009"
+    },
+    "nombre": "Bachianas Brasileiras No. 5",
+    "estilo": "Neoclásico",
+    "instrumentacion": "Soprano y ocho violonchelos",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000007"
+      },
+      "nombre": "Bachianas Brasileiras No. 5",
+      "autor": "Heitor Villa-Lobos"
+    },
+    "arreglo": null,
+    "arreglista": null,
+    "transcriptor": null,
+    "editor": "Ediciones Sur",
+    "url": "https://partituras.example.com/pdf/bachianas-5.pdf",
+    "info": "Partitura completa con partes separadas para los ocho violonchelos.",
+    "precio": 5490,
+    "dificultad": {
+      "estimada": 7.0,
+      "calculada": 7.9,
+      "suma_ponderada": 39.4,
+      "suma_pesos": 5.0,
+      "total_ratings": 1
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10400000000000000000a"
+    },
+    "nombre": "Vocalise Op. 34 No. 14",
+    "estilo": "Romántico",
+    "instrumentacion": "Violín y piano",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000008"
+      },
+      "nombre": "Vocalise Op. 34 No. 14",
+      "autor": "Sergei Rachmaninoff"
+    },
+    "arreglo": "Versión para violín y piano",
+    "arreglista": "Ana Morales",
+    "transcriptor": null,
+    "editor": "Editorial Lírica",
+    "url": "https://partituras.example.com/pdf/vocalise-violin-piano.pdf",
+    "info": "Partitura con parte de violín y acompañamiento de piano.",
+    "precio": 4290,
+    "dificultad": {
+      "estimada": 6.5,
+      "calculada": 6.4,
+      "suma_ponderada": 26.43,
+      "suma_pesos": 4.1,
+      "total_ratings": 1
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10400000000000000000b"
+    },
+    "nombre": "Por una cabeza",
+    "estilo": "Tango",
+    "instrumentacion": "Guitarra clásica",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000009"
+      },
+      "nombre": "Por una cabeza",
+      "autor": "Carlos Gardel"
+    },
+    "arreglo": null,
+    "arreglista": null,
+    "transcriptor": "Rodrigo Soto",
+    "editor": "Cancionero Andino",
+    "url": "https://partituras.example.com/pdf/por-una-cabeza-guitarra.pdf",
+    "info": "Transcripción para guitarra sola con tablatura opcional.",
+    "precio": 3490,
+    "dificultad": {
+      "estimada": 5.5,
+      "calculada": 5.5,
+      "suma_ponderada": 16.5,
+      "suma_pesos": 3,
+      "total_ratings": 0
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10400000000000000000c"
+    },
+    "nombre": "La Catedral - Tres movimientos",
+    "estilo": "Clásico",
+    "instrumentacion": "Guitarra clásica",
+    "obra": {
+      "_id": {
+        "$oid": "65a10200000000000000000a"
+      },
+      "nombre": "La Catedral",
+      "autor": "Agustín Barrios"
+    },
+    "arreglo": null,
+    "arreglista": null,
+    "transcriptor": null,
+    "editor": "Ediciones Sur",
+    "url": "https://partituras.example.com/pdf/la-catedral.pdf",
+    "info": "Edición completa de los tres movimientos con digitaciones.",
+    "precio": 3990,
+    "dificultad": {
+      "estimada": 7.5,
+      "calculada": 8.5,
+      "suma_ponderada": 42.5,
+      "suma_pesos": 5.0,
+      "total_ratings": 1
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10400000000000000000d"
+    },
+    "nombre": "Gracias a la vida - Voz y piano",
+    "estilo": "Folclore",
+    "instrumentacion": "Voz y piano",
+    "obra": {
+      "_id": {
+        "$oid": "65a102000000000000000005"
+      },
+      "nombre": "Gracias a la vida",
+      "autor": "Violeta Parra"
+    },
+    "arreglo": null,
+    "arreglista": null,
+    "transcriptor": "Rodrigo Soto",
+    "editor": "Cancionero Andino",
+    "url": "https://partituras.example.com/pdf/gracias-a-la-vida-piano.pdf",
+    "info": "Melodía con acompañamiento de piano escrito.",
+    "precio": 2990,
+    "dificultad": {
+      "estimada": 3.0,
+      "calculada": 3.0,
+      "suma_ponderada": 9.0,
+      "suma_pesos": 3,
+      "total_ratings": 0
+    },
+    "creada_en": {
+      "$date": "2026-11-02T00:00:00Z"
+    }
+  }
+]

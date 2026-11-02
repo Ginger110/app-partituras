@@ -1,0 +1,574 @@
+[
+  {
+    "_id": {
+      "$oid": "65a106000000000000000001"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000001"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a102000000000000000001"
+      },
+      "nombre": "Clair de lune"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000002"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000008"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a102000000000000000002"
+      },
+      "nombre": "The Entertainer"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000003"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000002"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a102000000000000000003"
+      },
+      "nombre": "Rhapsody in Blue"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000004"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000004"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a102000000000000000004"
+      },
+      "nombre": "Libertango"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000005"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000003"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a102000000000000000005"
+      },
+      "nombre": "Gracias a la vida"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000006"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000007"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a102000000000000000006"
+      },
+      "nombre": "Garota de Ipanema"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000007"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000006"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a102000000000000000007"
+      },
+      "nombre": "Bachianas Brasileiras No. 5"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000008"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000005"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a102000000000000000008"
+      },
+      "nombre": "Vocalise Op. 34 No. 14"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000009"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000004"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a102000000000000000009"
+      },
+      "nombre": "Por una cabeza"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000000a"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000006"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "obra",
+      "_id": {
+        "$oid": "65a10200000000000000000a"
+      },
+      "nombre": "La Catedral"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000000b"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000001"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a10300000000000000000b"
+      },
+      "nombre": "Piano esencial"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000000c"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000002"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a10300000000000000000c"
+      },
+      "nombre": "Jazz para principiantes"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000000d"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000003"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a10300000000000000000d"
+      },
+      "nombre": "Cancionero chileno"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000000e"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000004"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a10300000000000000000e"
+      },
+      "nombre": "Tango en cuerdas"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000000f"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000005"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a10300000000000000000f"
+      },
+      "nombre": "Románticos para violín"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000010"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000006"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a103000000000000000010"
+      },
+      "nombre": "Guitarra latinoamericana"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000011"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000007"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a103000000000000000011"
+      },
+      "nombre": "Bossa nova esencial"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000012"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000008"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a103000000000000000012"
+      },
+      "nombre": "Ragtime y estilo stride"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000013"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000009"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a103000000000000000013"
+      },
+      "nombre": "Voz y guitarra"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000014"
+    },
+    "usuario_id": {
+      "$oid": "65a10100000000000000000a"
+    },
+    "lista": "guardados",
+    "recurso": {
+      "tipo": "catalogo",
+      "_id": {
+        "$oid": "65a103000000000000000014"
+      },
+      "nombre": "Standards de jazz"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000015"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000001"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000001"
+      },
+      "nombre": "Clair de lune - Edición original"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 1
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000016"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000002"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000001"
+      },
+      "nombre": "Clair de lune - Edición original"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": -1
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000017"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000002"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000004"
+      },
+      "nombre": "Rhapsody in Blue - Dos pianos"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 0
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000018"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000003"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000002"
+      },
+      "nombre": "Clair de lune - Cuatro manos"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 1
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000019"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000004"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000005"
+      },
+      "nombre": "Libertango - Partitura general"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 0
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000001a"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000005"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a10400000000000000000a"
+      },
+      "nombre": "Vocalise Op. 34 No. 14"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 1
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000001b"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000006"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000009"
+      },
+      "nombre": "Bachianas Brasileiras No. 5"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": -1
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000001c"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000006"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a10400000000000000000c"
+      },
+      "nombre": "La Catedral - Tres movimientos"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 0
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000001d"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000007"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000002"
+      },
+      "nombre": "Clair de lune - Cuatro manos"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 1
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000001e"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000008"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000003"
+      },
+      "nombre": "The Entertainer"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 1
+  },
+  {
+    "_id": {
+      "$oid": "65a10600000000000000001f"
+    },
+    "usuario_id": {
+      "$oid": "65a101000000000000000009"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000007"
+      },
+      "nombre": "Gracias a la vida - Voz y guitarra"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 1
+  },
+  {
+    "_id": {
+      "$oid": "65a106000000000000000020"
+    },
+    "usuario_id": {
+      "$oid": "65a10100000000000000000a"
+    },
+    "lista": "repertorio",
+    "recurso": {
+      "tipo": "partitura",
+      "_id": {
+        "$oid": "65a104000000000000000008"
+      },
+      "nombre": "Garota de Ipanema - Quinteto"
+    },
+    "fecha_agregado": {
+      "$date": "2026-11-02T00:00:00Z"
+    },
+    "estado_dominio": "Dominada",
+    "mi_calificacion": 1
+  }
+]

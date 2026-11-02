@@ -1,0 +1,230 @@
+[
+  {
+    "_id": {
+      "$oid": "65a105000000000000000001"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000001"
+      },
+      "nombre": "Camila Rojas"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000001"
+      },
+      "nombre": "Clair de lune - Edición original"
+    },
+    "valor": 1,
+    "nivel_usuario": 5.5
+  },
+  {
+    "_id": {
+      "$oid": "65a105000000000000000002"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000002"
+      },
+      "nombre": "Diego Fuentes"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000001"
+      },
+      "nombre": "Clair de lune - Edición original"
+    },
+    "valor": -1,
+    "nivel_usuario": 10.0
+  },
+  {
+    "_id": {
+      "$oid": "65a105000000000000000003"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000002"
+      },
+      "nombre": "Diego Fuentes"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000004"
+      },
+      "nombre": "Rhapsody in Blue - Dos pianos"
+    },
+    "valor": 0,
+    "nivel_usuario": 10.0
+  },
+  {
+    "_id": {
+      "$oid": "65a105000000000000000004"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000003"
+      },
+      "nombre": "Valentina Soto"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000002"
+      },
+      "nombre": "Clair de lune - Cuatro manos"
+    },
+    "valor": 1,
+    "nivel_usuario": 3.3
+  },
+  {
+    "_id": {
+      "$oid": "65a105000000000000000005"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000004"
+      },
+      "nombre": "Matías Herrera"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000005"
+      },
+      "nombre": "Libertango - Partitura general"
+    },
+    "valor": 0,
+    "nivel_usuario": 7.8
+  },
+  {
+    "_id": {
+      "$oid": "65a105000000000000000006"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000005"
+      },
+      "nombre": "Javiera Muñoz"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a10400000000000000000a"
+      },
+      "nombre": "Vocalise Op. 34 No. 14"
+    },
+    "valor": 1,
+    "nivel_usuario": 5.5
+  },
+  {
+    "_id": {
+      "$oid": "65a105000000000000000007"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000006"
+      },
+      "nombre": "Sebastián Vidal"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000009"
+      },
+      "nombre": "Bachianas Brasileiras No. 5"
+    },
+    "valor": -1,
+    "nivel_usuario": 10.0
+  },
+  {
+    "_id": {
+      "$oid": "65a105000000000000000008"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000006"
+      },
+      "nombre": "Sebastián Vidal"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a10400000000000000000c"
+      },
+      "nombre": "La Catedral - Tres movimientos"
+    },
+    "valor": 0,
+    "nivel_usuario": 10.0
+  },
+  {
+    "_id": {
+      "$oid": "65a105000000000000000009"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000007"
+      },
+      "nombre": "Francisca Araya"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000002"
+      },
+      "nombre": "Clair de lune - Cuatro manos"
+    },
+    "valor": 1,
+    "nivel_usuario": 1.0
+  },
+  {
+    "_id": {
+      "$oid": "65a10500000000000000000a"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000008"
+      },
+      "nombre": "Tomás Contreras"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000003"
+      },
+      "nombre": "The Entertainer"
+    },
+    "valor": 1,
+    "nivel_usuario": 7.8
+  },
+  {
+    "_id": {
+      "$oid": "65a10500000000000000000b"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a101000000000000000009"
+      },
+      "nombre": "Constanza Pizarro"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000007"
+      },
+      "nombre": "Gracias a la vida - Voz y guitarra"
+    },
+    "valor": 1,
+    "nivel_usuario": 3.3
+  },
+  {
+    "_id": {
+      "$oid": "65a10500000000000000000c"
+    },
+    "usuario": {
+      "_id": {
+        "$oid": "65a10100000000000000000a"
+      },
+      "nombre": "Nicolás Bravo"
+    },
+    "partitura": {
+      "_id": {
+        "$oid": "65a104000000000000000008"
+      },
+      "nombre": "Garota de Ipanema - Quinteto"
+    },
+    "valor": 1,
+    "nivel_usuario": 5.5
+  }
+]

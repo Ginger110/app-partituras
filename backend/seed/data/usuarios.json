@@ -1,0 +1,172 @@
+[
+  {
+    "_id": {
+      "$oid": "65a101000000000000000001"
+    },
+    "nombre": "Camila Rojas",
+    "email": "camila.rojas@example.com",
+    "contrasena_hash": "scrypt$36289311fcc60e431b172e15d5048cef$2e3e4d9d6770cdf5afa3047686bbb5d3d1907b7933477d7a4a53ffdc42fd0f218360d6912383e17f78ecb73cb0f98b79463625c775e5081537e9db86d3a9c353",
+    "rol": "usuario",
+    "nivel_tecnico": 5.5,
+    "nivel_base": 5.5,
+    "estilo": "Clásico",
+    "link_portafolio": "https://portafolio.example.com/camila",
+    "instrumento_principal": "Piano",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Camila+Rojas&background=random",
+    "bio": "Estilo preferido: Clásico."
+  },
+  {
+    "_id": {
+      "$oid": "65a101000000000000000002"
+    },
+    "nombre": "Diego Fuentes",
+    "email": "diego.fuentes@example.com",
+    "contrasena_hash": "scrypt$38ebcb303940c997eb1e7ffa76d3674b$ed7e6a18678cb32dcccca108132158be1e0896d65b08219bdb3e5736aae432af585eedd606a71e45e2d1199f0c26b72cf84938aff5676ceb9350888410e2cd91",
+    "rol": "moderador",
+    "nivel_tecnico": 10.0,
+    "nivel_base": 10.0,
+    "estilo": "Jazz",
+    "link_portafolio": "https://portafolio.example.com/diego",
+    "instrumento_principal": "Piano",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Diego+Fuentes&background=random",
+    "bio": "Estilo preferido: Jazz."
+  },
+  {
+    "_id": {
+      "$oid": "65a101000000000000000003"
+    },
+    "nombre": "Valentina Soto",
+    "email": "valentina.soto@example.com",
+    "contrasena_hash": "scrypt$d3ce4ed7803da70089278b83fd927882$796293c358a3ef6458841dbbbc428541ac11957776bcccb3730f531d64d783069e86b3cd1ed2173a8922e4dc9e1fb2c7c35229f1c415967785da2846f05a6abf",
+    "rol": "usuario",
+    "nivel_tecnico": 3.3,
+    "nivel_base": 3.3,
+    "estilo": "Folclore",
+    "link_portafolio": null,
+    "instrumento_principal": "Guitarra",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Valentina+Soto&background=random",
+    "bio": "Estilo preferido: Folclore."
+  },
+  {
+    "_id": {
+      "$oid": "65a101000000000000000004"
+    },
+    "nombre": "Matías Herrera",
+    "email": "matias.herrera@example.com",
+    "contrasena_hash": "scrypt$ccda7de3a55924df339c07374f783620$827fee17f90797b5c3771bd95be580df5247277319a2bbc5a63a9feda64a4d0547e557fc1b76870d33b44d68f84d9842c31dd1bfb47bfd7eef67f0a0a6a34d45",
+    "rol": "usuario",
+    "nivel_tecnico": 7.8,
+    "nivel_base": 7.8,
+    "estilo": "Tango",
+    "link_portafolio": "https://portafolio.example.com/matias",
+    "instrumento_principal": "Cuarteto de cuerdas",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Matías+Herrera&background=random",
+    "bio": "Estilo preferido: Tango."
+  },
+  {
+    "_id": {
+      "$oid": "65a101000000000000000005"
+    },
+    "nombre": "Javiera Muñoz",
+    "email": "javiera.munoz@example.com",
+    "contrasena_hash": "scrypt$5f0dfb334b9ddd3df3d9199a7221e1a9$b373f6015a6d18fe55f772be25ae3815e3e8340a7217fd29956133f9ba93a0c137f7b7b03a79a0dfa890ae7404d09e085d8794e589c71d2554cc34a2f3e9cf97",
+    "rol": "usuario",
+    "nivel_tecnico": 5.5,
+    "nivel_base": 5.5,
+    "estilo": "Romántico",
+    "link_portafolio": null,
+    "instrumento_principal": "Violín",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Javiera+Muñoz&background=random",
+    "bio": "Estilo preferido: Romántico."
+  },
+  {
+    "_id": {
+      "$oid": "65a101000000000000000006"
+    },
+    "nombre": "Sebastián Vidal",
+    "email": "sebastian.vidal@example.com",
+    "contrasena_hash": "scrypt$f92b697a9d3b939bf59137be1d9214df$e7da91b612a47c1cb926f40b7d9b944d217d5dff526cb395957d503ca34fcd7368580c99562f81b2baa45a7d05f8f944b42ba7d2e6d578cfa0358da5aa3eed69",
+    "rol": "usuario",
+    "nivel_tecnico": 10.0,
+    "nivel_base": 10.0,
+    "estilo": "Clásico",
+    "link_portafolio": "https://portafolio.example.com/sebastian",
+    "instrumento_principal": "Guitarra clásica",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Sebastián+Vidal&background=random",
+    "bio": "Estilo preferido: Clásico."
+  },
+  {
+    "_id": {
+      "$oid": "65a101000000000000000007"
+    },
+    "nombre": "Francisca Araya",
+    "email": "francisca.araya@example.com",
+    "contrasena_hash": "scrypt$303e583431011fcc527ad5ebb475c582$e19189e96a3549dbd2ac92329c9bbe8478ae292f662c70a38a8adb3d7f7476fcaaa7cd87d3031d6fd50ee33c1a50c02b2742b84905f97d5b589e69dcda6c97e9",
+    "rol": "usuario",
+    "nivel_tecnico": 1.0,
+    "nivel_base": 1.0,
+    "estilo": "Bossa nova",
+    "link_portafolio": null,
+    "instrumento_principal": "Conjunto de jazz",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Francisca+Araya&background=random",
+    "bio": "Estilo preferido: Bossa nova."
+  },
+  {
+    "_id": {
+      "$oid": "65a101000000000000000008"
+    },
+    "nombre": "Tomás Contreras",
+    "email": "tomas.contreras@example.com",
+    "contrasena_hash": "scrypt$3c99bca07588d0b582394d83fbbc6c29$942263f78699dad2dbc4d48223dcff2d553da091a3f8a0a625958ea47fec7bc5a7e2725a50d49947e0fa618ce6dc601c59afc4a66534450de3a82c6c0e02eac2",
+    "rol": "usuario",
+    "nivel_tecnico": 7.8,
+    "nivel_base": 7.8,
+    "estilo": "Ragtime",
+    "link_portafolio": "https://portafolio.example.com/tomas",
+    "instrumento_principal": "Piano",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Tomás+Contreras&background=random",
+    "bio": "Estilo preferido: Ragtime."
+  },
+  {
+    "_id": {
+      "$oid": "65a101000000000000000009"
+    },
+    "nombre": "Constanza Pizarro",
+    "email": "constanza.pizarro@example.com",
+    "contrasena_hash": "scrypt$2c1e508d6a5bf753ae866b0c834787f4$dc533f184c2ff186342d761eb9ea7bfcbb8ed20c28025c19fb99e5ae7d413428bceaaa419fb396eaec3bdc56949973a8a5329d0187c301c81008d95b097ba901",
+    "rol": "usuario",
+    "nivel_tecnico": 3.3,
+    "nivel_base": 3.3,
+    "estilo": "Folclore",
+    "link_portafolio": null,
+    "instrumento_principal": "Voz y guitarra",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Constanza+Pizarro&background=random",
+    "bio": "Estilo preferido: Folclore."
+  },
+  {
+    "_id": {
+      "$oid": "65a10100000000000000000a"
+    },
+    "nombre": "Nicolás Bravo",
+    "email": "nicolas.bravo@example.com",
+    "contrasena_hash": "scrypt$65f65da28d8735454124605ab61db621$0fff12e2f03280684a960156122e83ea26fbae76f72d883372825e31c6a0e8f1ecfbb0647e448bca8376487bbe42dd6a91b6f174ed509d01affa6ddffa974d63",
+    "rol": "usuario",
+    "nivel_tecnico": 5.5,
+    "nivel_base": 5.5,
+    "estilo": "Jazz",
+    "link_portafolio": "https://portafolio.example.com/nicolas",
+    "instrumento_principal": "Conjunto de jazz",
+    "instrumentos_secundarios": [],
+    "avatar_url": "https://ui-avatars.com/api/?name=Nicolás+Bravo&background=random",
+    "bio": "Estilo preferido: Jazz."
+  }
+]
