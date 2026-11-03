@@ -3001,7 +3001,7 @@
   }
 
   .mobile-filter-drawer-panel {
-    background-color: #FFFFFF;
+    background-color: var(--surface-card);
     width: 320px;
     max-width: 85vw;
     height: 100%;
