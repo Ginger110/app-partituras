@@ -56,7 +56,6 @@ export default function RatingModal() {
       value: -1,
       title: 'Menos exigente que mi nivel',
       subtitle: `Sentí la obra accesible en comparación a mi nivel actual (${user.nivel_tecnico.toFixed(1)}).`,
-      deltaDescription: 'Ayuda a normalizar la obra a un nivel más asequible.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--diff-principiante-dot, #059669)" strokeWidth="2.5">
           <polyline points="6 9 12 15 18 9"></polyline>
@@ -69,7 +68,6 @@ export default function RatingModal() {
       value: 0,
       title: 'Igual a mi nivel',
       subtitle: `La dificultad de ejecución coincide exactamente con mi nivel técnico (${user.nivel_tecnico.toFixed(1)}).`,
-      deltaDescription: 'Afianza y calibra la dificultad actual del sistema.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--diff-intermedio-dot, #D97706)" strokeWidth="2.5">
           <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -82,14 +80,13 @@ export default function RatingModal() {
       value: 1,
       title: 'Más exigente que mi nivel',
       subtitle: `Contiene pasajes técnicos complejos que superan mi nivel actual (${user.nivel_tecnico.toFixed(1)}).`,
-      deltaDescription: 'Ajusta el puntaje de la obra hacia arriba en el catálogo.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--diff-virtuoso-dot, #7C3AED)" strokeWidth="2.5">
           <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
       ),
       activeBorder: 'var(--diff-virtuoso-border, #8B5CF6)',
-      activeBg: 'var(--diff-virtuoso-bg, #F5F3FF)'
+      activeBg: 'var(--diff-virtuoso-bg, #f0f0f0)'
     }
   ];
 
@@ -111,7 +108,7 @@ export default function RatingModal() {
           </div>
           <div className="modal-header-text">
             <h2 id="rating-modal-title" className="modal-title">Calificar Dificultad Técnica (CU02)</h2>
-            <p className="modal-subtitle">Calibración Bayesiana colaborativa según tu nivel instrumental</p>
+            <p className="modal-subtitle">Calibración colaborativa según tu nivel instrumental</p>
           </div>
           <button
             type="button"
@@ -137,7 +134,6 @@ export default function RatingModal() {
                 <div className="benchmark-title">{partitura.nombre}</div>
                 <div className="benchmark-meta">{partitura.autor_obra} • {partitura.instrumentacion}</div>
                 <div className="benchmark-metric">
-                  <span className="metric-caption">Dificultad actual del sistema:</span>
                   <BadgeDificultad score={partitura.dificultadCalculada} size="md" />
                 </div>
               </div>
@@ -149,7 +145,6 @@ export default function RatingModal() {
                 <div className="benchmark-title">{user.nombre}</div>
                 <div className="benchmark-meta">{user.instrumento_principal}</div>
                 <div className="benchmark-metric">
-                  <span className="metric-caption">Tu Nivel Técnico Actual:</span>
                   <span
                     className="user-reference-badge font-mono font-bold"
                     style={{ backgroundColor: userTier.badgeBg, color: userTier.badgeText, borderColor: userTier.badgeBorder }}
@@ -198,7 +193,6 @@ export default function RatingModal() {
                       </div>
                       <h4 className="option-title">{opt.title}</h4>
                       <p className="option-subtitle">{opt.subtitle}</p>
-                      <span className="option-delta-badge">{opt.deltaDescription}</span>
                     </div>
                   );
                 })}
@@ -219,7 +213,7 @@ export default function RatingModal() {
                   </div>
                 </div>
                 <p className="preview-explanation">
-                  Tu calificación se ponderará con tu nivel instrumental ({user.nivel_tecnico.toFixed(1)}) usando el algoritmo Bayesiano del servidor.
+                  Tu calificación se ponderará con tu nivel instrumental ({user.nivel_tecnico.toFixed(1)}).
                 </p>
               </div>
             </div>

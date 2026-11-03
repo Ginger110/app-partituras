@@ -97,16 +97,14 @@ export default function CatalogoPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 aria-label="Buscar partituras"
               />
-              {searchTerm && (
-                <button
-                  type="button"
-                  className="search-clear-btn"
-                  onClick={() => setSearchTerm('')}
-                  title="Borrar búsqueda"
-                >
-                  ✕
-                </button>
-              )}
+              <button
+                type="button"
+                className={`search-clear-btn ${searchTerm ? 'visible' : 'invisible'}`}
+                onClick={() => setSearchTerm('')}
+                title="Borrar búsqueda"
+              >
+                ✕
+              </button>
             </div>
 
             {/* Sugerencias rápidas */}

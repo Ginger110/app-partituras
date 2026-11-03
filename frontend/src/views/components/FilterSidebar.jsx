@@ -97,9 +97,6 @@ export default function FilterSidebar({
           </svg>
           <span>Ordenar Catálogo</span>
         </label>
-        <p className="filter-help-text">
-          Reorganiza la lista según tu preferencia técnica o popularidad.
-        </p>
         <div className="sort-select-wrapper sidebar-sort-wrapper">
           <select
             id="sidebar-sort-select"
@@ -122,9 +119,6 @@ export default function FilterSidebar({
           <span>Dificultad Técnica Máxima</span>
           <span className="diff-current-val font-mono">{filters.maxDifficulty.toFixed(1)} / 10.0</span>
         </label>
-        <p className="filter-help-text">
-          Filtra por el nivel dinámico calculado colectivamente.
-        </p>
         <input
           id="filter-diff-max"
           type="range"

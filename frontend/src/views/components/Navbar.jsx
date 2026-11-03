@@ -10,7 +10,6 @@ export default function Navbar() {
 
   const navItems = [
     { id: 'catalogo', label: 'Catálogo', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10' },
-    { id: 'perfil', label: 'Mi Perfil', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', badge: repertorio.length },
     { id: 'subir', label: 'Subir Partitura', icon: 'M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' }
   ];
 
@@ -34,7 +33,6 @@ export default function Navbar() {
           </div>
           <div className="brand-titles">
             <span className="brand-name">ScorePulse</span>
-            <span className="brand-tagline">Catalogación & Dificultad Dinámica</span>
           </div>
         </div>
 
@@ -108,7 +106,6 @@ export default function Navbar() {
             <span className="level-dot" style={{ backgroundColor: tier.dotColor }}></span>
             <span className="level-label">Nivel Técnico</span>
             <span className="level-value font-mono">{user.nivel_tecnico.toFixed(1)}</span>
-            <span className="level-tier-name">{tier.label}</span>
           </div>
 
           <div
@@ -157,7 +154,7 @@ export default function Navbar() {
             <img src={user.avatar_url} alt="" className="mobile-user-avatar" />
             <div>
               <div className="mobile-user-name">{user.nombre}</div>
-              <div className="mobile-user-meta">{user.instrumento_principal} • Nivel {user.nivel_tecnico.toFixed(1)} ({tier.label})</div>
+              <div className="mobile-user-meta">{user.instrumento_principal} • Nivel {user.nivel_tecnico.toFixed(1)}</div>
             </div>
           </div>
           <nav className="mobile-nav-links">

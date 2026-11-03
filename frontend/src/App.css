@@ -4,6 +4,7 @@
    ========================================================================== */
 
 /* Layout Base */
+
 .app-shell {
   min-height: 100vh;
   display: flex;
@@ -14,6 +15,20 @@
 .main-content-area {
   flex: 1;
   width: 100%;
+}
+
+.search-clear-btn {
+  transition: opacity 0.2s ease;
+}
+
+.search-clear-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.search-clear-btn.invisible {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -340,6 +355,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  justify-content: center;
+  gap: 0.5rem;
   padding: 0.75rem 1rem;
   border-radius: var(--radius-md);
   font-weight: 600;
@@ -352,7 +369,7 @@
 
 .mobile-nav-link-active {
   background-color: var(--primary-100);
-  color: var(--primary-700);
+  color: var(--primary-900);
 }
 
 .mobile-nav-badge {
@@ -391,14 +408,15 @@
   letter-spacing: -0.03em;
   margin-bottom: 0.75rem;
   line-height: 1.25;
+  white-space: nowrap;
 }
 
 .highlight-text {
-  color: var(--tertiary-700);
-  background: linear-gradient(120deg, var(--tertiary-50) 0%, rgba(240, 253, 250, 0.3) 100%);
+  color: var(--primary-700);
+  background: linear-gradient(120deg, rgba(79, 70, 229, 0.05) 0%, rgba(79, 70, 229, 0.1) 100%);
   padding: 0 0.35rem;
   border-radius: var(--radius-sm);
-  border-bottom: 2.5px solid var(--tertiary-500);
+  border-bottom: 2.5px solid var(--primary-500);
 }
 
 .search-hero-subtitle {
@@ -950,6 +968,10 @@
   gap: 0.25rem;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .metric-col.text-right {
   align-items: flex-end;
 }
@@ -996,7 +1018,7 @@
 }
 
 .paid-tag {
-  color: var(--primary-700);
+  color: var(--primary-900);
 }
 
 .score-card-footer {
@@ -1099,15 +1121,15 @@
 }
 
 .btn-in-repertory {
-  background-color: #ECFDF5;
-  border-color: #A7F3D0;
-  color: #065F46;
+  background-color: #f0fdf4;
+  border-color: #86efac;
+  color: #166534;
   font-weight: 600;
 }
 
 .btn-in-repertory:hover {
-  background-color: #D1FAE5;
-  border-color: #6EE7B7;
+  background-color: #dcfce7;
+  border-color: #bbf7d0;
 }
 
 .btn-ghost-danger {
@@ -1437,7 +1459,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-bottom: 2px solid var(--border-subtle);
   padding-bottom: 0.25rem;
   flex-wrap: wrap;
 }
@@ -1494,11 +1515,6 @@
   color: #FFFFFF;
 }
 
-.btn-add-repertory {
-  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
-  padding: 0.65rem 1.25rem;
-  font-size: 0.925rem;
-}
 
 /* Tabla de Repertorio */
 .repertory-table-wrapper {
@@ -1610,6 +1626,7 @@
   padding: 2rem;
   max-width: 860px;
   box-shadow: var(--shadow-sm);
+  margin: 0 auto;
 }
 
 .form-section-header {
@@ -1988,9 +2005,7 @@
 }
 
 .btn-submit-score {
-  padding: 0.75rem 1.75rem;
-  font-size: 1rem;
-  font-weight: 700;
+  flex: 0 auto;
 }
 
 /* ==========================================================================
@@ -2452,7 +2467,7 @@
 .notes-card-title {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--primary-700);
+  color: var(--primary-900);
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -2579,6 +2594,7 @@
 .repertory-impact-preview {
   margin: 0.75rem 1.5rem 0;
   padding: 1rem;
+  color: #064E3B;
   background-color: #ECFDF5;
   border: 1px solid #A7F3D0;
   border-radius: var(--radius-md);
@@ -2956,6 +2972,11 @@
 
 /* Tablet y Pantallas Medianas (<= 1023px) */
 @media (max-width: 1023px) {
+
+  .search-hero-title {
+    white-space: wrap;
+  }
+
   .catalogo-columns-wrapper {
     grid-template-columns: 1fr;
   }

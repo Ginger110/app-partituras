@@ -9,26 +9,26 @@
      SISTEMA TRI-CROMÁTICO DE MARCA ScorePulse (3 Colores Armónicos WCAG AA)
      1. Color Primario: Índigo Real (#4F46E5) - Acciones principales, marca
      2. Color Secundario Neutro: Pizarra (#0F172A) - Tipografía, superficies
-     3. Color Terciario / Acento: Teal Turquesa Musical (#0D9488) - Énfasis, distinciones
+     3. Color Terciario / Acento: Verde (#22C55E) - Énfasis, distinciones
      ======================================================================== */
 
   /* 1. Paleta Primaria (Índigo) */
   --primary-50: #EEF2FF;
   --primary-100: #E0E7FF;
   --primary-500: #6366F1;
-  --primary-600: #4F46E5;
+  --primary-600: #4f46e5;
   --primary-700: #4338CA;
   --primary-900: #312E81;
 
-  /* 2. Paleta Terciaria / Acento Armónico (Teal Turquesa Musical) */
-  --color-tertiary: #0D9488;
-  --tertiary-50: #F0FDFA;
-  --tertiary-100: #CCFBF1;
-  --tertiary-200: #99F6E4;
-  --tertiary-500: #14B8A6;
-  --tertiary-600: #0D9488;
-  --tertiary-700: #0F766E;
-  --tertiary-800: #115E59;
+  /* 2. Paleta Terciaria / Acento Armónico */
+  --color-tertiary: #15803d;
+  --tertiary-50: #f0fdf4;
+  --tertiary-100: #dcfce7;
+  --tertiary-200: #bbf7d0;
+  --tertiary-500: #22c55e;
+  --tertiary-600: #16a34a;
+  --tertiary-700: #15803d;
+  --tertiary-800: #166534;
 
   /* Superficies y Bordes */
   --bg-app: #F8FAFC;
@@ -45,10 +45,10 @@
   --text-caption: #64748B;  /* Slate 500 */
 
   /* Paleta Semántica de Dificultad Técnica Instrumental */
-  --diff-principiante-bg: #ECFDF5;
-  --diff-principiante-text: #065F46;
-  --diff-principiante-border: #A7F3D0;
-  --diff-principiante-dot: #10B981;
+  --diff-principiante-bg: #f0fdf4;
+  --diff-principiante-text: #14532d;
+  --diff-principiante-border: #bbf7d0;
+  --diff-principiante-dot: #22c55e;
 
   --diff-intermedio-bg: #FFFBEB;
   --diff-intermedio-text: #92400E;
@@ -66,9 +66,9 @@
   --diff-virtuoso-dot: #8B5CF6;
 
   /* Estados de Feedback */
-  --success-bg: #ECFDF5;
-  --success-text: #065F46;
-  --success-border: #10B981;
+  --success-bg: #f0fdf4;
+  --success-text: #14532d;
+  --success-border: #22c55e;
 
   --danger-bg: #FEF2F2;
   --danger-text: #991B1B;
@@ -111,14 +111,14 @@
   --primary-900: #EEF2FF;
 
   /* 2. Paleta Terciaria / Acento Armónico (Teal Turquesa Musical) */
-  --color-tertiary: #14B8A6;
+  --color-tertiary: #4ade80;
   --tertiary-50: rgba(20, 184, 166, 0.15);
   --tertiary-100: rgba(20, 184, 166, 0.25);
-  --tertiary-200: #2DD4BF;
-  --tertiary-500: #2DD4BF;
-  --tertiary-600: #14B8A6;
-  --tertiary-700: #0D9488;
-  --tertiary-800: #99F6E4;
+  --tertiary-200: #86efac;
+  --tertiary-500: #22c55e;
+  --tertiary-600: #16a34a;
+  --tertiary-700: #15803d;
+  --tertiary-800: #86efac;
 
   /* Superficies y Bordes Oscuros de Alto Contraste */
   --bg-app: #0B0F19;
@@ -135,10 +135,10 @@
   --text-caption: #64748B;  /* Slate 500 */
 
   /* Paleta Semántica de Dificultad Técnica (Modo Oscuro) */
-  --diff-principiante-bg: #064E3B;
-  --diff-principiante-text: #6EE7B7;
-  --diff-principiante-border: #059669;
-  --diff-principiante-dot: #34D399;
+  --diff-principiante-bg: #14532d;
+  --diff-principiante-text: #86efac;
+  --diff-principiante-border: #16a34a;
+  --diff-principiante-dot: #22c55e;
 
   --diff-intermedio-bg: #451A03;
   --diff-intermedio-text: #FCD34D;
@@ -156,9 +156,9 @@
   --diff-virtuoso-dot: #A78BFA;
 
   /* Estados de Feedback (Modo Oscuro) */
-  --success-bg: #064E3B;
-  --success-text: #A7F3D0;
-  --success-border: #059669;
+  --success-bg: #14532d;
+  --success-text: #86efac;
+  --success-border: #15803d;
 
   --danger-bg: #450A0A;
   --danger-text: #FECACA;
