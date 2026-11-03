@@ -121,16 +121,14 @@ export function AppProvider({ children }) {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => {
-      const next = prev === 'dark' ? 'light' : 'dark';
-      addToast(
-        next === 'dark' ? 'Modo oscuro activado 🌙' : 'Modo claro activado ☀️',
-        'info',
-        2500
-      );
-      return next;
-    });
-  };
+  const next = theme === 'dark' ? 'light' : 'dark';
+  setTheme(next);
+  addToast(
+    next === 'dark' ? 'Modo oscuro activado 🌙' : 'Modo claro activado ☀️',
+    'info',
+    2500
+  );
+};
 
   // Reemplaza una partitura actualizada en todas las listas en memoria
   const reemplazarPartitura = (actualizada) => {
@@ -254,7 +252,7 @@ export function AppProvider({ children }) {
     setUiState(state);
     if (state === 'feedback') {
       addToast('¡Partitura añadida a tu repertorio! Tu nivel técnico se ha actualizado de 4.2 a 4.5', 'success', 7000);
-      addToast('Calificación relativa registrada con éxito en el sistema Bayesiano.', 'info', 7000);
+      addToast('Calificación relativa registrada con éxito.', 'info', 7000);
     } else if (state === 'error') {
       addToast('Simulación activada: visualizando errores de validación en formularios (en rojo).', 'error');
     } else if (state === 'empty') {

@@ -132,8 +132,12 @@ export default function PerfilPage() {
             <div className="profile-identity-info">
               <div className="profile-tags-row">
                 <span className="profile-instrument-badge font-semibold">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M9 18V5l12-2v13M6 18a3 3 0 100-6 3 3 0 000 6z"></path>
+                  <svg fill="#15726c" width="10" height="10" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512">
+                    <g>
+                      <g>
+                        <path d="m413.5,389.4c-25.8,0-46.7-17.2-46.7-38.4s21-38.4 46.7-38.4c25.8,0 46.7,17.2 46.7,38.4s-21,38.4-46.7,38.4zm-315,70.8c-25.8,0-46.7-17.2-46.7-38.4 0-21.2 21-38.4 46.7-38.4s46.7,17.2 46.7,38.4c0,21.1-20.9,38.4-46.7,38.4zm382.1-449.2h-314.9c-11.3,0-20.4,9.1-20.4,20.4v323.3c-13.5-7.8-29.5-12.3-46.7-12.3-48.3,0-87.5,35.5-87.5,79.2 0,43.7 39.3,79.2 87.5,79.2 48.3,0 87.5-35.5 87.5-79.2v-369.8h274.1v232.2c-13.5-7.8-29.5-12.2-46.7-12.2-48.3,0-87.5,35.5-87.5,79.2s39.3,79.2 87.5,79.2c48.3,0 87.5-35.5 87.5-79.2v-319.6c0-11.3-9.1-20.4-20.4-20.4z" />
+                      </g>
+                    </g>
                   </svg>
                   {user.instrumento_principal}
                 </span>
@@ -158,28 +162,6 @@ export default function PerfilPage() {
               <span className="spotlight-dot" style={{ backgroundColor: tier.dotColor }} />
               <span>Categoría: <strong>{tier.label}</strong></span>
             </div>
-
-            {/* Simulación visual de recálculo dinámico */}
-            <div className="level-progression-box">
-              <div className="progression-metric-row font-mono text-xs">
-                <span>Nivel Base: {user.nivel_base.toFixed(1)}</span>
-                <span className="progression-delta" style={{ color: deltaNivel >= 0 ? 'var(--diff-principiante-dot, #059669)' : 'var(--diff-avanzado-dot, #DC2626)' }}>
-                  {deltaNivel >= 0 ? `+${deltaNivel.toFixed(1)} acumulado` : `${deltaNivel.toFixed(1)}`}
-                </span>
-              </div>
-              <div className="progression-bar-bg">
-                <div
-                  className="progression-bar-fill"
-                  style={{
-                    width: `${Math.min(100, (user.nivel_tecnico / 10) * 100)}%`,
-                    backgroundColor: tier.dotColor
-                  }}
-                />
-              </div>
-              <span className="progression-footnote">
-                Recalculado con {repertorio.length} obras dominadas y ratings comunitarios.
-              </span>
-            </div>
           </div>
         </div>
 
@@ -199,10 +181,6 @@ export default function PerfilPage() {
             </span>
             <span className="stat-label">Calificaciones Aportadas</span>
           </div>
-          <div className="stat-pill-item">
-            <span className="stat-number font-mono">{baseTier.label}</span>
-            <span className="stat-label">Punto de Partida</span>
-          </div>
         </div>
       </div>
 
@@ -216,8 +194,12 @@ export default function PerfilPage() {
             className={`profile-tab-btn ${profileTab === 'repertorio' ? 'profile-tab-active' : ''}`}
             onClick={() => handleTabChange('repertorio')}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18V5l12-2v13M6 18a3 3 0 100-6 3 3 0 000 6z"></path>
+            <svg fill="currentColor" width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512">
+              <g>
+                <g>
+                  <path d="m413.5,389.4c-25.8,0-46.7-17.2-46.7-38.4s21-38.4 46.7-38.4c25.8,0 46.7,17.2 46.7,38.4s-21,38.4-46.7,38.4zm-315,70.8c-25.8,0-46.7-17.2-46.7-38.4 0-21.2 21-38.4 46.7-38.4s46.7,17.2 46.7,38.4c0,21.1-20.9,38.4-46.7,38.4zm382.1-449.2h-314.9c-11.3,0-20.4,9.1-20.4,20.4v323.3c-13.5-7.8-29.5-12.3-46.7-12.3-48.3,0-87.5,35.5-87.5,79.2 0,43.7 39.3,79.2 87.5,79.2 48.3,0 87.5-35.5 87.5-79.2v-369.8h274.1v232.2c-13.5-7.8-29.5-12.2-46.7-12.2-48.3,0-87.5,35.5-87.5,79.2s39.3,79.2 87.5,79.2c48.3,0 87.5-35.5 87.5-79.2v-319.6c0-11.3-9.1-20.4-20.4-20.4z" />
+                </g>
+              </g>
             </svg>
             <span>Mi Repertorio</span>
             <span className="tab-counter-badge">{repertorio.length}</span>
@@ -308,7 +290,7 @@ export default function PerfilPage() {
                           </div>
                         </td>
                         <td>
-                          <span className="table-instrument-tag">{item.instrumentacion}</span>
+                          <span>{item.instrumentacion}</span>
                         </td>
                         <td>
                           <BadgeDificultad score={item.dificultadCalculada} size="sm" />
@@ -318,7 +300,7 @@ export default function PerfilPage() {
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                               <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Dominada • Aporta a tu Nivel
+                            Aprendida
                           </span>
                         </td>
                         <td>
@@ -330,8 +312,8 @@ export default function PerfilPage() {
                               {item.mi_calificacion === 1
                                 ? 'Más exigente (+1)'
                                 : item.mi_calificacion === -1
-                                ? 'Menos exigente (-1)'
-                                : 'Igual a tu nivel (0)'}
+                                  ? 'Menos exigente (-1)'
+                                  : 'Igual a tu nivel (0)'}
                             </span>
                           ) : (
                             <span className="pending-rating-tag">
