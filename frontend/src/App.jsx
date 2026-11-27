@@ -1,5 +1,7 @@
 import AppProvider from './context/AppContext';
+import AuthProvider from './context/AuthContext';
 import { useApp } from './context/useApp';
+import ProtectedRoute from './views/components/ProtectedRoute';
 import MainLayout from './views/layouts/MainLayout';
 import CatalogoPage from './views/pages/CatalogoPage';
 import PerfilPage from './views/pages/PerfilPage';
@@ -56,8 +58,13 @@ function MainRouter() {
 
 export default function App() {
   return (
-    <AppProvider>
-      <MainRouter />
-    </AppProvider>
+    <AuthProvider>
+      <ProtectedRoute>
+        {/* AppProvider se monta tras autenticar: carga los datos con el token y se reinicia al cerrar sesión */}
+        <AppProvider>
+          <MainRouter />
+        </AppProvider>
+      </ProtectedRoute>
+    </AuthProvider>
   );
 }

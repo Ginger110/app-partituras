@@ -10,12 +10,35 @@ export class ApiError extends Error {
   }
 }
 
+// --- Token JWT (localStorage) ---
+const TOKEN_KEY = 'scorepulse_token';
+export const SESION_EXPIRADA = 'scorepulse:sesion-expirada';
+
+export const tokenStorage = {
+  get: () => {
+    try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
+  },
+  set: (token) => {
+    try { localStorage.setItem(TOKEN_KEY, token); } catch { /* almacenamiento no disponible */ }
+  },
+  clear: () => {
+    try { localStorage.removeItem(TOKEN_KEY); } catch { /* almacenamiento no disponible */ }
+  }
+};
+
+const CODIGOS_SESION_INVALIDA = ['TOKEN_EXPIRADO', 'TOKEN_INVALIDO', 'TOKEN_REQUERIDO', 'USUARIO_NO_ENCONTRADO'];
+
 async function pedir(ruta, { method = 'GET', body } = {}) {
+  const token = tokenStorage.get();
+  const headers = {};
+  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  if (token) headers.Authorization = `Bearer ${token}`; // se adjunta automáticamente en cada petición
+
   let respuesta;
   try {
     respuesta = await fetch(`${BASE}${ruta}`, {
       method,
-      headers: body !== undefined ? { 'Content-Type': 'application/json' } : undefined,
+      headers,
       body: body !== undefined ? JSON.stringify(body) : undefined
     });
   } catch {
@@ -31,6 +54,11 @@ async function pedir(ruta, { method = 'GET', body } = {}) {
   }
 
   if (!respuesta.ok) {
+    // Token vencido o inválido: se cierra la sesión local (AuthContext escucha este evento)
+    if (token && (respuesta.status === 401 || respuesta.status === 403) && CODIGOS_SESION_INVALIDA.includes(datos?.error?.codigo)) {
+      tokenStorage.clear();
+      window.dispatchEvent(new Event(SESION_EXPIRADA));
+    }
     throw new ApiError(
       respuesta.status,
       datos?.error?.codigo,
@@ -56,7 +84,12 @@ function queryString(params) {
 }
 
 export const api = {
-  // Usuario actual (demo)
+  // Autenticación (JWT)
+  registrar: (datos) => pedir('/auth/register', { method: 'POST', body: datos }),
+  iniciarSesion: (credenciales) => pedir('/auth/login', { method: 'POST', body: credenciales }),
+  perfil: () => pedir('/auth/perfil'),
+
+  // Usuario actual (el del token; sin token, el usuario demo)
   usuarioActual: () => pedir('/usuarios/me'),
   actualizarPerfil: (campos) => pedir('/usuarios/me', { method: 'PUT', body: campos }),
 

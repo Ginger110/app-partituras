@@ -4,7 +4,8 @@ const catalogoCtrl = require('../controllers/catalogoCtrl');
 const partituraCtrl = require('../controllers/partituraCtrl');
 const adminCtrl = require('../controllers/adminCtrl');
 
-router.use('/partituras', require('./partituraRoutes'));
+router.use('/auth', require('./authRoutes'));
+router.use('/partituras',require('./partituraRoutes'));
 router.use('/catalogos', require('./catalogoRoutes'));
 router.use('/usuarios', require('./usuarioRoutes'));
 router.get('/obras', catalogoCtrl.listarObras);
