@@ -3,10 +3,37 @@ const PartituraModel = require('./PartituraModel');
 
 const col = () => getDB().collection('usuarios');
 
-const porId = (id) => col().findOne({ _id: id });
-const porEmail = (email) => col().findOne({ email });
-const crear = async (doc) => { const r = await col().insertOne(doc); return { ...doc, _id: r.insertedId }; };
-const actualizar = async (id, set) => col().findOneAndUpdate({ _id: id }, { $set: set }, { returnDocument: 'after' });
+/*
+ * Estructura del documento (colección `usuarios`):
+ *   nombre        String  requerido
+ *   email         String  requerido, único (índice), guardado en minúsculas y sin espacios
+ *   passwordHash  String  requerido (bcrypt). Los usuarios del seed conservan `contrasena_hash` (scrypt, legado)
+ *   createdAt     Date    por defecto la fecha de creación
+ *   + campos de la app: rol, nivel_tecnico, nivel_base, instrumento_principal, avatar_url, bio...
+ */
+
+// Los hashes nunca salen de la capa de modelo salvo en porEmailConHash (uso interno del login)
+const SIN_HASH = { projection: { passwordHash: 0, contrasena_hash: 0 } };
+
+const normalizarEmail = (email) => String(email || '').trim().toLowerCase();
+
+const porId = (id) => col().findOne({ _id: id }, SIN_HASH);
+const porEmail = (email) => col().findOne({ email: normalizarEmail(email) }, SIN_HASH);
+const porEmailConHash = (email) => col().findOne({ email: normalizarEmail(email) });
+const existeEmail = async (email) => !!(await col().findOne({ email: normalizarEmail(email) }, { projection: { _id: 1 } }));
+
+// Inserta y devuelve el documento sin hashes
+const crear = async (doc) => {
+  const completo = { createdAt: new Date(), ...doc };
+  if (completo.email) completo.email = normalizarEmail(completo.email);
+  const r = await col().insertOne(completo);
+  const { passwordHash, contrasena_hash, ...publico } = completo; // eslint-disable-line no-unused-vars
+  return { ...publico, _id: r.insertedId };
+};
+
+// Índice único en email (idempotente; se llama al iniciar el servidor)
+const asegurarIndices = () => col().createIndex({ email: 1 }, { unique: true });
+const actualizar = async (id, set) => col().findOneAndUpdate({ _id: id }, { $set: set }, { returnDocument: 'after', ...SIN_HASH });
 
 // Equivalente al ON DELETE CASCADE del modelo relacional (usuario -> recurso -> obra -> partitura): lo hace la aplicación
 async function eliminarConReferencias(id) {
@@ -33,4 +60,4 @@ async function eliminarConReferencias(id) {
   return r;
 }
 
-module.exports = { porId, porEmail, crear, actualizar, eliminarConReferencias };
+module.exports = { porId, porEmail, porEmailConHash, existeEmail, crear, actualizar, eliminarConReferencias, asegurarIndices, normalizarEmail };

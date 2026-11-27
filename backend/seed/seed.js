@@ -13,7 +13,9 @@ const COLECCIONES = ['usuarios', 'obras', 'catalogos', 'partituras', 'ratings', 
 const VALIDADORES = {
   usuarios: {
     bsonType: 'object',
-    required: ['nombre', 'email', 'contrasena_hash', 'rol', 'nivel_tecnico', 'nivel_base'],
+    required: ['nombre', 'email', 'rol', 'nivel_tecnico', 'nivel_base'],
+    // passwordHash (bcrypt, registro JWT) o contrasena_hash (scrypt, usuarios del seed)
+    anyOf: [{ required: ['passwordHash'] }, { required: ['contrasena_hash'] }],
     properties: {
       rol: { enum: ['usuario', 'moderador'] },
       nivel_tecnico: { bsonType: 'number', minimum: 1, maximum: 10 },
@@ -89,4 +91,6 @@ async function main() {
   await client.close();
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
+
+module.exports = { VALIDADORES };

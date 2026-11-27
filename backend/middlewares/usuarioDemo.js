@@ -1,10 +1,18 @@
 const { ApiError } = require('../utils/errores');
 const UsuarioModel = require('../models/UsuarioModel');
+const { leerToken } = require('./authMiddleware');
 
-// Sin pantalla de login en esta etapa: la API actúa como un "usuario demo" fijo (DEMO_USER_EMAIL).
-// Para demostrar la autorización por rol se puede indicar otro usuario con el encabezado X-Demo-Usuario (email).
+// Si llega un JWT válido (Authorization: Bearer), se actúa como ese usuario.
+// Sin token, la API sigue actuando como el "usuario demo" (DEMO_USER_EMAIL) o el indicado en X-Demo-Usuario.
 async function conUsuario(req, res, next) {
   try {
+    const sesion = leerToken(req);
+    if (sesion) {
+      const usuario = await UsuarioModel.porId(sesion._id);
+      if (!usuario) throw new ApiError(401, 'USUARIO_NO_ENCONTRADO', 'La cuenta del token ya no existe.');
+      req.usuario = usuario;
+      return next();
+    }
     const email = String(req.get('x-demo-usuario') || process.env.DEMO_USER_EMAIL || 'camila.rojas@example.com').toLowerCase();
     const usuario = await UsuarioModel.porEmail(email);
     if (!usuario) throw new ApiError(401, 'USUARIO_NO_ENCONTRADO', `No existe el usuario ${email}.`);

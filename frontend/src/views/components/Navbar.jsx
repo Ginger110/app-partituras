@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { useApp } from '../../context/useApp';
+import { useAuth } from '../../context/useAuth';
 import { getDifficultyTier } from '../../utils/difficultyUtils';
+
+const ICONO_SALIR = 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1';
 
 export default function Navbar() {
   const { currentView, setCurrentView, user, repertorio, theme, toggleTheme } = useApp();
+  const { logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const tier = getDifficultyTier(user.nivel_tecnico);
@@ -123,6 +127,18 @@ export default function Navbar() {
             <span className="avatar-status-badge" style={{ backgroundColor: tier.dotColor }} />
           </div>
 
+          <button
+            type="button"
+            className="theme-toggle-btn logout-btn"
+            onClick={logout}
+            aria-label="Cerrar sesión"
+            title="Cerrar sesión"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d={ICONO_SALIR}></path>
+            </svg>
+          </button>
+
           {/* Botón menú hamburguesa (Móvil) */}
           <button
             type="button"
@@ -212,6 +228,13 @@ export default function Navbar() {
               )}
             </button>
           </div>
+
+          <button type="button" className="mobile-nav-link" onClick={logout}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d={ICONO_SALIR}></path>
+            </svg>
+            <span>Cerrar sesión</span>
+          </button>
         </div>
       )}
     </header>
