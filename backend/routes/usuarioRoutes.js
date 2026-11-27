@@ -1,21 +1,21 @@
 const router = require('express').Router();
 const ctrl = require('../controllers/usuarioCtrl');
-const { conUsuario, requerirModerador } = require('../middlewares/usuarioDemo');
+const { conUsuarioAutenticado, requerirModerador } = require('../middlewares/authMiddleware');
 
 router.post('/', ctrl.crear);
 
-// Usuario actual (demo)
-router.get('/me', conUsuario, ctrl.me);
-router.put('/me', conUsuario, ctrl.actualizarMe);
-router.get('/me/repertorio', conUsuario, ctrl.listarRepertorio);
-router.post('/me/repertorio', conUsuario, ctrl.agregarRepertorio);
-router.delete('/me/repertorio/:partituraId', conUsuario, ctrl.quitarRepertorio);
-router.get('/me/favoritos', conUsuario, ctrl.listarFavoritos);
-router.post('/me/favoritos', conUsuario, ctrl.agregarFavorito);
-router.delete('/me/favoritos/:partituraId', conUsuario, ctrl.quitarFavorito);
+// Usuario autenticado (JWT)
+router.get('/me', conUsuarioAutenticado, ctrl.me);
+router.put('/me', conUsuarioAutenticado, ctrl.actualizarMe);
+router.get('/me/repertorio', conUsuarioAutenticado, ctrl.listarRepertorio);
+router.post('/me/repertorio', conUsuarioAutenticado, ctrl.agregarRepertorio);
+router.delete('/me/repertorio/:partituraId', conUsuarioAutenticado, ctrl.quitarRepertorio);
+router.get('/me/favoritos', conUsuarioAutenticado, ctrl.listarFavoritos);
+router.post('/me/favoritos', conUsuarioAutenticado, ctrl.agregarFavorito);
+router.delete('/me/favoritos/:partituraId', conUsuarioAutenticado, ctrl.quitarFavorito);
 
-// Operaciones por id
-router.put('/:id/nivel', ctrl.actualizarNivelPorId);
-router.delete('/:id', conUsuario, requerirModerador, ctrl.eliminar);
+// Operaciones por id (solo moderador)
+router.put('/:id/nivel', conUsuarioAutenticado, requerirModerador, ctrl.actualizarNivelPorId);
+router.delete('/:id', conUsuarioAutenticado, requerirModerador, ctrl.eliminar);
 
 module.exports = router;

@@ -98,11 +98,25 @@ const crear = asyncHandler(async (req, res) => {
   res.status(201).json({ partitura: presentarPartitura(actualizada), obra_creada: obraCreada, obra_id: obra._id.toString() });
 });
 
+// Solo quien subió la obra de la partitura o un moderador puede modificarla o eliminarla
+async function verificarAutoria(usuario, partituraId) {
+  const p = await PartituraModel.porId(partituraId);
+  if (!p) throw new ApiError(404, 'PARTITURA_NO_ENCONTRADA', 'No existe una partitura con ese id.');
+  if (usuario.rol === 'moderador') return p;
+  const obra = await ObraModel.porId(p.obra._id);
+  const autorId = obra && obra.subido_por && obra.subido_por._id;
+  if (!autorId || !autorId.equals(usuario._id)) {
+    throw new ApiError(403, 'SIN_PERMISO', 'Solo quien subió la partitura o un moderador puede modificarla.');
+  }
+  return p;
+}
+
 // PUT /partituras/:id/precio  (UPDATE de la Etapa 1)
 const actualizarPrecio = asyncHandler(async (req, res) => {
   const id = parseId(req.params.id);
   const precio = Number(req.body && req.body.precio);
   if (!Number.isInteger(precio) || precio < 0) throw new ApiError(400, 'DATOS_INVALIDOS', 'El precio debe ser un entero mayor o igual a 0.');
+  await verificarAutoria(req.usuario, id);
   const r = await PartituraModel.actualizarPrecio(id, precio);
   if (!r.matchedCount) throw new ApiError(404, 'PARTITURA_NO_ENCONTRADA', 'No existe una partitura con ese id.');
   res.json({ mensaje: 'Precio actualizado.', id: id.toString(), precio });
@@ -110,7 +124,9 @@ const actualizarPrecio = asyncHandler(async (req, res) => {
 
 // DELETE /partituras/:id  (DELETE de la Etapa 1, con limpieza de referencias)
 const eliminar = asyncHandler(async (req, res) => {
-  const limpieza = await PartituraModel.eliminarConReferencias(parseId(req.params.id));
+  const id = parseId(req.params.id);
+  await verificarAutoria(req.usuario, id);
+  const limpieza = await PartituraModel.eliminarConReferencias(id);
   if (!limpieza) throw new ApiError(404, 'PARTITURA_NO_ENCONTRADA', 'No existe una partitura con ese id.');
   res.json({ mensaje: 'Partitura eliminada.', limpieza });
 });

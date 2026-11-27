@@ -9,17 +9,13 @@ ejecutar las consultas del proyecto. Responde siempre en **JSON** y guarda sus d
 Colecciones: \`usuarios\`, \`obras\`, \`catalogos\`, \`partituras\`, \`ratings\` y \`biblioteca\` (repertorio y guardados).
 
 ## Autenticación y autorización
-En esta etapa **no hay pantalla de login**: la API actúa como un *usuario demo* fijo (variable de entorno \`DEMO_USER_EMAIL\`,
-por defecto \`camila.rojas@example.com\`, rol \`usuario\`). Las operaciones "de usuario" (\`/usuarios/me/**\`, subir una partitura,
-calificar) se ejecutan a nombre de ese usuario.
+Autenticación con **JWT**: \`POST /auth/register\` o \`POST /auth/login\` devuelven un \`token\` que se envía como
+\`Authorization: Bearer <token>\` (botón **Authorize** de esta página). Expira según \`JWT_EXPIRES_IN\` (24 h por defecto).
 
-Para demostrar la **autorización por rol** se puede enviar el encabezado \`X-Demo-Usuario: <email>\`:
-* Rol **usuario**: catálogo, calificar, repertorio, favoritos, subir partituras, editar su perfil.
-* Rol **moderador** (ej. \`diego.fuentes@example.com\`): además puede eliminar ratings, eliminar usuarios y ejecutar \`/admin/estructura\`.
-  Sin el rol responde **403**.
-
-> El encabezado \`X-Demo-Usuario\` es solo para demostración. En producción se reemplaza por autenticación con token (JWT):
-> las contraseñas ya se guardan con hash **scrypt**.
+* **Público (sin token):** lectura del catálogo — listado, búsqueda, filtros, facetas, ficha de partitura, ratings, obras y catálogos.
+* **Requiere token** (marcado con candado): subir partituras, calificar, repertorio, favoritos y perfil (\`/usuarios/me/**\`).
+  Editar el precio o eliminar una partitura solo lo puede hacer quien subió la obra o un moderador.
+* Rol **moderador**: además puede eliminar ratings, cambiar el nivel o eliminar usuarios y ejecutar \`/admin/estructura\`. Sin el rol responde **403**.
 
 ## Errores
 Todos los errores tienen la forma \`{ "error": { "codigo": "...", "mensaje": "..." } }\`.
@@ -27,10 +23,10 @@ Todos los errores tienen la forma \`{ "error": { "codigo": "...", "mensaje": "..
 | HTTP | Código | Significado |
 |---|---|---|
 | 400 | ID_INVALIDO, PARAMETRO_INVALIDO, DATOS_INVALIDOS, JSON_INVALIDO, VALIDACION_BD | Id mal formado, parámetro fuera de rango, datos faltantes o JSON inválido |
-| 401 | USUARIO_NO_ENCONTRADO | El usuario indicado en \`X-Demo-Usuario\` no existe |
-| 403 | SIN_PERMISO, ADMIN_DESHABILITADO | Falta el rol moderador, o las operaciones de estructura están deshabilitadas |
+| 401 | TOKEN_REQUERIDO, TOKEN_EXPIRADO, CREDENCIALES_INVALIDAS, USUARIO_NO_ENCONTRADO | Falta el token, expiró, credenciales incorrectas o la cuenta ya no existe |
+| 403 | TOKEN_INVALIDO, SIN_PERMISO, ADMIN_DESHABILITADO | Token inválido, falta el rol/autoría, o las operaciones de estructura están deshabilitadas |
 | 404 | *_NO_ENCONTRADA, RUTA_NO_ENCONTRADA | El recurso o la ruta no existe |
-| 409 | DUPLICADO, YA_EN_REPERTORIO, YA_EN_FAVORITOS, USUARIO_DEMO_PROTEGIDO | Viola un índice único o una regla de negocio |
+| 409 | DUPLICADO, EMAIL_REGISTRADO, YA_EN_REPERTORIO, YA_EN_FAVORITOS, USUARIO_DEMO_PROTEGIDO | Viola un índice único o una regla de negocio |
 | 500 | ERROR_INTERNO | Error inesperado al consultar la base de datos |
 
 ## Límites y cuotas
@@ -39,7 +35,8 @@ Todos los errores tienen la forma \`{ "error": { "codigo": "...", "mensaje": "..
 * El servidor está en el plan gratuito de Render: tras un periodo de inactividad se suspende y la primera solicitud puede tardar más.
 
 ## Consideraciones de seguridad
-* Contraseñas guardadas con hash **scrypt** (con sal); nunca se devuelven en las respuestas.
+* Contraseñas guardadas con hash **bcrypt** (10 rondas; los usuarios del seed conservan scrypt); nunca se devuelven en las respuestas.
+* Tokens JWT firmados con \`JWT_SECRET\` (variable de entorno) y con expiración.
 * Validación de entrada en cada endpoint: los ids se exigen como ObjectId (24 caracteres hex), los valores se validan por tipo y rango,
   y el texto de búsqueda se escapa antes de usarse como expresión regular (evita inyección de operadores de MongoDB).
 * Credenciales de la base de datos en variables de entorno (\`.env\` no se sube al repositorio).
@@ -54,7 +51,9 @@ const resp = (description, schema, example) => ({ description, ...(schema ? { co
 const errResp = (description, codigo) => resp(description, ref('Error'), { error: { codigo, mensaje: description } });
 const pid = (name = 'id', description = 'Id de la partitura (ObjectId de 24 caracteres hex)') =>
   ({ name, in: 'path', required: true, description, schema: { type: 'string', pattern: '^[0-9a-fA-F]{24}$' }, example: '65a104000000000000000005' });
-const demo = { $ref: '#/components/parameters/XDemoUsuario' };
+// Marcador de "requiere JWT": al final se reemplaza por security bearerAuth + respuesta 401
+const demo = { __requiereToken: true };
+const e401 = errResp('Falta el token, expiró o la cuenta no existe', 'TOKEN_REQUERIDO');
 const body = (schema, example, description) => ({ required: true, ...(description ? { description } : {}), content: json(schema, example) });
 
 const EJ_PARTITURA = {
@@ -102,7 +101,7 @@ const paths = {
         editor: { type: 'string' }, url: { type: 'string' }, info: { type: 'string' }, precio: { type: 'integer', minimum: 0 }, dificultadEstimada: { type: 'number', minimum: 1, maximum: 10 },
       } }, { modo: 'obra_nueva', nombre_obra: 'Nocturno Op. 9 No. 2', autor_obra: 'Frédéric Chopin', estilo: 'Romántico', instrumentacion: 'Piano solo', url: 'https://imslp.org/nocturno.pdf', precio: 0, dificultadEstimada: 6.5 }),
       responses: { 201: resp('Partitura creada', { type: 'object', properties: { partitura: ref('Partitura'), obra_creada: { type: 'boolean' }, obra_id: { type: 'string' } } }),
-        400: e400, 404: e404('OBRA_NO_ENCONTRADA', 'No existe la obra seleccionada'), 401: errResp('Usuario demo inexistente', 'USUARIO_NO_ENCONTRADO') },
+        400: e400, 404: e404('OBRA_NO_ENCONTRADA', 'No existe la obra seleccionada'), 401: e401 },
     },
   },
   '/partituras/facetas': { get: {
@@ -112,10 +111,10 @@ const paths = {
   '/partituras/{id}': {
     get: { tags: ['Partituras'], summary: 'Ficha de una partitura', parameters: [pid()],
       responses: { 200: resp('Partitura', ref('Partitura'), EJ_PARTITURA), 400: errResp('Id inválido', 'ID_INVALIDO'), 404: e404('PARTITURA_NO_ENCONTRADA', 'No existe una partitura con ese id') } },
-    delete: { tags: ['Partituras'], summary: 'Eliminar una partitura', description: 'DELETE de la Etapa 1. Como MongoDB no tiene claves foráneas, la API elimina también sus ratings, sus entradas de biblioteca y la quita de los catálogos.', parameters: [pid()],
+    delete: { tags: ['Partituras'], summary: 'Eliminar una partitura', description: 'DELETE de la Etapa 1. Solo quien subió la obra o un moderador (si no, **403**). Como MongoDB no tiene claves foráneas, la API elimina también sus ratings, sus entradas de biblioteca y la quita de los catálogos.', parameters: [pid(), demo],
       responses: { 200: resp('Eliminada', { type: 'object', properties: { mensaje: { type: 'string' }, limpieza: { type: 'object' } } }, { mensaje: 'Partitura eliminada.', limpieza: { ratings: 1, biblioteca: 2, catalogos: 1 } }), 400: errResp('Id inválido', 'ID_INVALIDO'), 404: e404('PARTITURA_NO_ENCONTRADA', 'No existe una partitura con ese id') } },
   },
-  '/partituras/{id}/precio': { put: { tags: ['Partituras'], summary: 'Actualizar el precio', description: 'UPDATE de la Etapa 1.', parameters: [pid()],
+  '/partituras/{id}/precio': { put: { tags: ['Partituras'], summary: 'Actualizar el precio', description: 'UPDATE de la Etapa 1. Solo quien subió la obra o un moderador (si no, **403**).', parameters: [pid(), demo],
     requestBody: body({ type: 'object', required: ['precio'], properties: { precio: { type: 'integer', minimum: 0 } } }, { precio: 8000 }),
     responses: { 200: resp('Precio actualizado', null), 400: e400, 404: e404('PARTITURA_NO_ENCONTRADA', 'No existe una partitura con ese id') } } },
   '/partituras/{id}/ratings': {
@@ -140,7 +139,7 @@ const paths = {
       { nombre: 'Ana Prueba', email: 'ana@prueba.cl', contrasena: 'clave12345', nivel_tecnico: 3 }),
     responses: { 201: resp('Usuario creado', ref('Usuario'), EJ_USUARIO), 400: e400, 409: e409 } } },
   '/usuarios/me': {
-    get: { tags: ['Usuarios'], summary: 'Perfil del usuario actual', parameters: [demo], responses: { 200: resp('Usuario', ref('Usuario'), EJ_USUARIO), 401: errResp('Usuario demo inexistente', 'USUARIO_NO_ENCONTRADO') } },
+    get: { tags: ['Usuarios'], summary: 'Perfil del usuario actual', parameters: [demo], responses: { 200: resp('Usuario', ref('Usuario'), EJ_USUARIO), 401: e401 } },
     put: { tags: ['Usuarios'], summary: 'Editar el perfil', parameters: [demo],
       requestBody: body({ type: 'object', properties: { nombre: { type: 'string' }, email: { type: 'string' }, instrumento_principal: { type: 'string' }, link_portafolio: { type: 'string' }, bio: { type: 'string' }, instrumentos_secundarios: { type: 'array', items: { type: 'string' } } } }, { nombre: 'Camila Rojas', instrumento_principal: 'Piano' }),
       responses: { 200: resp('Usuario actualizado', ref('Usuario')), 400: e400, 409: errResp('El correo ya está en uso', 'DUPLICADO') } },
@@ -161,7 +160,7 @@ const paths = {
   },
   '/usuarios/me/favoritos/{partituraId}': { delete: { tags: ['Repertorio y favoritos'], summary: 'Quitar de favoritos', parameters: [pid('partituraId'), demo],
     responses: { 200: resp('Quitada', null), 400: errResp('Id inválido', 'ID_INVALIDO'), 404: e404('NO_ESTA_EN_FAVORITOS', 'La partitura no está en tus favoritos') } } },
-  '/usuarios/{id}/nivel': { put: { tags: ['Usuarios'], summary: 'Actualizar el nivel técnico de un usuario', description: 'UPDATE de la Etapa 1. Los ratings ya emitidos no cambian (guardan una foto del nivel).', parameters: [pid('id', 'Id del usuario')],
+  '/usuarios/{id}/nivel': { put: { tags: ['Usuarios'], summary: 'Actualizar el nivel técnico de un usuario', description: 'UPDATE de la Etapa 1 (solo moderador). Los ratings ya emitidos no cambian (guardan una foto del nivel).', parameters: [pid('id', 'Id del usuario'), demo],
     requestBody: body({ type: 'object', required: ['nivel_tecnico'], properties: { nivel_tecnico: { type: 'number', minimum: 1, maximum: 10 } } }, { nivel_tecnico: 6.5 }),
     responses: { 200: resp('Usuario actualizado', ref('Usuario')), 400: e400, 404: e404('USUARIO_NO_ENCONTRADO', 'No existe un usuario con ese id') } } },
   '/usuarios/{id}': { delete: { tags: ['Usuarios'], summary: 'Eliminar un usuario (moderador)', description: 'DELETE de la Etapa 1, **en cascada** como en el modelo relacional: elimina sus obras, catálogos y las partituras de esas obras, sus ratings y su biblioteca. No permite eliminar al usuario demo.',
@@ -170,6 +169,31 @@ const paths = {
     requestBody: body({ type: 'object', required: ['tipo'], properties: { tipo: { type: 'string', enum: ['alter1', 'alter2', 'drop'] } } }, { tipo: 'alter1' }),
     responses: { 200: resp('Operación ejecutada', null), 400: e400, 403: e403 } } },
 };
+
+// Autenticación
+const credenciales = { email: { type: 'string', format: 'email' }, password: { type: 'string', minLength: 8 } };
+const respAuth = { type: 'object', properties: { token: { type: 'string' }, usuario: ref('Usuario') } };
+Object.assign(paths, {
+  '/auth/register': { post: { tags: ['Autenticación'], summary: 'Crear una cuenta', description: 'Devuelve un JWT y los datos públicos del usuario.',
+    requestBody: body({ type: 'object', required: ['nombre', 'email', 'password'], properties: { nombre: { type: 'string' }, ...credenciales } }, { nombre: 'Ana Prueba', email: 'ana@prueba.cl', password: 'clave12345' }),
+    responses: { 201: resp('Cuenta creada', respAuth), 400: e400, 409: errResp('El correo ya está registrado', 'EMAIL_REGISTRADO') } } },
+  '/auth/login': { post: { tags: ['Autenticación'], summary: 'Iniciar sesión',
+    requestBody: body({ type: 'object', required: ['email', 'password'], properties: credenciales }, { email: 'ana@prueba.cl', password: 'clave12345' }),
+    responses: { 200: resp('Sesión iniciada', respAuth), 400: e400, 401: errResp('Correo o contraseña incorrectos', 'CREDENCIALES_INVALIDAS') } } },
+  '/auth/perfil': { get: { tags: ['Autenticación'], summary: 'Usuario del token', parameters: [demo],
+    responses: { 200: resp('Usuario', ref('Usuario'), EJ_USUARIO), 403: errResp('Token inválido', 'TOKEN_INVALIDO') } } },
+});
+
+// Reemplaza el marcador por el esquema de seguridad Bearer
+for (const ops of Object.values(paths)) {
+  for (const op of Object.values(ops)) {
+    if (!op.parameters || !op.parameters.some((p) => p.__requiereToken)) continue;
+    op.parameters = op.parameters.filter((p) => !p.__requiereToken);
+    if (!op.parameters.length) delete op.parameters;
+    op.security = [{ bearerAuth: [] }];
+    op.responses = { 401: e401, ...op.responses };
+  }
+}
 
 const schemas = {
   Error: { type: 'object', properties: { error: { type: 'object', properties: { codigo: { type: 'string' }, mensaje: { type: 'string' } } } } },
@@ -191,10 +215,10 @@ module.exports = {
   openapi: '3.0.3',
   info: { title: 'API App Partituras', version: '2.0.0', description: DESCRIPCION },
   servers: [{ url: '/api', description: 'Servidor actual' }],
-  tags: [{ name: 'Partituras' }, { name: 'Ratings' }, { name: 'Repertorio y favoritos' }, { name: 'Catálogos y obras' }, { name: 'Usuarios' }, { name: 'Administración' }],
+  tags: [{ name: 'Autenticación' }, { name: 'Partituras' }, { name: 'Ratings' }, { name: 'Repertorio y favoritos' }, { name: 'Catálogos y obras' }, { name: 'Usuarios' }, { name: 'Administración' }],
   paths,
   components: {
     schemas,
-    parameters: { XDemoUsuario: { name: 'X-Demo-Usuario', in: 'header', required: false, description: 'Solo demostración: email del usuario que realiza la acción (por defecto, el usuario demo). Ej: diego.fuentes@example.com (moderador)', schema: { type: 'string' } } },
+    securitySchemes: { bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', description: 'Token obtenido en /auth/login o /auth/register' } },
   },
 };

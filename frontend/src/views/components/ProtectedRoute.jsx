@@ -1,25 +1,31 @@
-import { useState } from 'react';
 import { useAuth } from '../../context/useAuth';
-import LoginPage from '../pages/LoginPage';
-import RegisterPage from '../pages/RegisterPage';
+import { useApp } from '../../context/useApp';
 
-// La app no usa un router: sin sesión se muestran las pantallas de acceso en lugar del contenido protegido
-export default function ProtectedRoute({ children }) {
-  const { isAuthenticated, verificando } = useAuth();
-  const [pantalla, setPantalla] = useState('login');
+// Solo para vistas exclusivamente privadas (perfil, subir partitura). El resto de la app es pública.
+export default function ProtectedRoute({ children, mensaje = 'Inicia sesión para ver esta sección.' }) {
+  const { isAuthenticated, verificando, abrirLogin, abrirRegistro } = useAuth();
+  const { user } = useApp();
 
-  if (verificando) {
+  // Con token pero sin los datos del usuario todavía (las vistas privadas los necesitan)
+  if (verificando || (isAuthenticated && !user)) {
     return (
-      <div role="status" className="auth-screen">
-        <p className="auth-subtitle">Verificando tu sesión…</p>
+      <div role="status" className="auth-gate">
+        <p className="auth-subtitle">Cargando tu sesión…</p>
       </div>
     );
   }
 
   if (!isAuthenticated) {
-    return pantalla === 'login'
-      ? <LoginPage onIrARegistro={() => setPantalla('registro')} />
-      : <RegisterPage onIrALogin={() => setPantalla('login')} />;
+    return (
+      <div className="auth-gate">
+        <h2 className="auth-title">Necesitas una cuenta</h2>
+        <p className="auth-subtitle">{mensaje}</p>
+        <div className="auth-gate-actions">
+          <button type="button" className="btn-primary" onClick={() => abrirLogin()}>Iniciar sesión</button>
+          <button type="button" className="btn-secondary" onClick={() => abrirRegistro()}>Registrarse</button>
+        </div>
+      </div>
+    );
   }
 
   return children;

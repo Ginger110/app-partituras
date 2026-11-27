@@ -8,3 +8,9 @@ export function useAuth() {
   }
   return context;
 }
+
+// Guardia de acción reutilizable: requireAuth(accion, mensaje?) ejecuta la acción si hay sesión;
+// si no, abre el login con el mensaje y la ejecuta después de autenticarse.
+export function useRequireAuth() {
+  return useAuth().requireAuth;
+}

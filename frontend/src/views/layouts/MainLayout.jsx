@@ -2,6 +2,7 @@ import Navbar from '../components/Navbar';
 import RatingModal from '../components/RatingModal';
 import DetailModal from '../components/DetailModal';
 import AddToRepertoryModal from '../components/AddToRepertoryModal';
+import AuthModal from '../components/AuthModal';
 import ToastNotification from '../components/ToastNotification';
 import UIStateSwitcher from '../components/UIStateSwitcher';
 
@@ -36,6 +37,8 @@ export default function MainLayout({ children }) {
       <RatingModal />
       <DetailModal />
       <AddToRepertoryModal />
+      {/* Modal de acceso: al final para quedar sobre cualquier otro modal */}
+      <AuthModal />
 
       {/* 5. Notificaciones Toast */}
       <ToastNotification />

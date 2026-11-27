@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/useAuth';
-import AuthLayout from '../layouts/AuthLayout';
 
 const esEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
@@ -13,7 +12,7 @@ function validar({ nombre, email, password, confirmar }) {
   return errores;
 }
 
-export default function RegisterPage({ onIrALogin }) {
+export default function RegisterForm({ onIrALogin }) {
   const { register } = useAuth();
   const [form, setForm] = useState({ nombre: '', email: '', password: '', confirmar: '' });
   const [errores, setErrores] = useState({});
@@ -35,20 +34,21 @@ export default function RegisterPage({ onIrALogin }) {
     setEnviando(true);
     try {
       await register(form.nombre.trim(), form.email.trim(), form.password);
-      // Al registrarse queda autenticado y ProtectedRoute muestra la app
+      // Al registrarse queda autenticado: se cierra el modal y se retoma la acción pendiente
     } catch (err) {
       setErrorServidor(err.message || 'No se pudo crear la cuenta.');
       setEnviando(false);
     }
   };
 
-  const campo = (id, etiqueta, tipo, autoComplete) => (
+  const campo = (id, etiqueta, tipo, autoComplete, autoFocus = false) => (
     <div className="form-field-group">
       <label htmlFor={`reg-${id}`} className="form-label">{etiqueta}</label>
       <input
         id={`reg-${id}`}
         type={tipo}
         autoComplete={autoComplete}
+        autoFocus={autoFocus}
         className={`form-input ${errores[id] ? 'form-input-error' : ''}`}
         value={form[id]}
         onChange={cambiar(id)}
@@ -60,19 +60,10 @@ export default function RegisterPage({ onIrALogin }) {
   );
 
   return (
-    <AuthLayout
-      titulo="Crea tu cuenta"
-      subtitulo="Registra tu repertorio y sigue tu nivel técnico."
-      pie={
-        <>
-          ¿Ya tienes cuenta?{' '}
-          <button type="button" className="auth-link" onClick={onIrALogin}>Inicia sesión</button>
-        </>
-      }
-    >
+    <>
       <form className="auth-form" onSubmit={handleSubmit} noValidate>
         {errorServidor && <div className="auth-alert" role="alert">{errorServidor}</div>}
-        {campo('nombre', 'Nombre', 'text', 'name')}
+        {campo('nombre', 'Nombre', 'text', 'name', true)}
         {campo('email', 'Correo electrónico', 'email', 'email')}
         {campo('password', 'Contraseña', 'password', 'new-password')}
         {campo('confirmar', 'Confirmar contraseña', 'password', 'new-password')}
@@ -80,6 +71,10 @@ export default function RegisterPage({ onIrALogin }) {
           {enviando ? 'Creando cuenta…' : 'Registrarme'}
         </button>
       </form>
-    </AuthLayout>
+      <p className="auth-footer">
+        ¿Ya tienes cuenta?{' '}
+        <button type="button" className="auth-link" onClick={onIrALogin}>Inicia sesión</button>
+      </p>
+    </>
   );
 }

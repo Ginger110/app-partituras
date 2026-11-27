@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react';
-import { AppContext } from './AppContextInstance';
+import { AppContext, VISTAS_PRIVADAS } from './AppContextInstance';
 import { api } from '../models/services/api';
+import { useAuth } from './useAuth';
 
-// Consulta a la API todo lo que necesita la app al iniciar
+// Datos públicos del catálogo (no requieren sesión)
 function obtenerDatosIniciales() {
-  return Promise.all([
-    api.usuarioActual(),
-    api.obras(),
-    api.partituras(),
-    api.repertorio(),
-    api.favoritos(),
-    api.facetas()
-  ]);
+  return Promise.all([api.obras(), api.partituras(), api.facetas()]);
+}
+
+// Datos personales (requieren JWT)
+function obtenerDatosUsuario() {
+  return Promise.all([api.usuarioActual(), api.repertorio(), api.favoritos()]);
 }
 
 export function AppProvider({ children }) {
+  const { token, requireAuth, consumirAccionPendiente } = useAuth();
+
   // Modo Oscuro / Claro con persistencia en localStorage y detección de preferencia del SO
   const [theme, setTheme] = useState(() => {
     try {
@@ -30,16 +31,23 @@ export function AppProvider({ children }) {
   });
 
   // Estado de navegación
-  const [currentView, setCurrentView] = useState('catalogo'); // 'catalogo' | 'perfil' | 'subir'
+  const [currentView, setCurrentViewRaw] = useState('catalogo'); // 'catalogo' | 'perfil' | 'subir'
   const [profileTab, setProfileTab] = useState('repertorio'); // 'repertorio' | 'favoritos' | 'editar'
 
-  // Datos principales (vienen de la API / MongoDB)
-  const [user, setUser] = useState(null);
+  // Datos públicos (vienen de la API / MongoDB)
   const [obras, setObras] = useState([]);
   const [partituras, setPartituras] = useState([]);
-  const [repertorio, setRepertorio] = useState([]);
-  const [favoritos, setFavoritos] = useState([]);
   const [facetas, setFacetas] = useState({ instrumentaciones: [], estilos: [] });
+
+  // Datos personales: solo se exponen si pertenecen al token actual (al cerrar sesión desaparecen)
+  const [datosDe, setDatosDe] = useState(null);
+  const [userState, setUser] = useState(null);
+  const [repertorioState, setRepertorio] = useState([]);
+  const [favoritosState, setFavoritos] = useState([]);
+  const datosVigentes = !!token && datosDe === token;
+  const user = datosVigentes ? userState : null;
+  const repertorio = datosVigentes ? repertorioState : [];
+  const favoritos = datosVigentes ? favoritosState : [];
 
   // Estado de la carga inicial y versión del catálogo (se incrementa cuando los datos cambian)
   const [cargando, setCargando] = useState(true);
@@ -51,9 +59,9 @@ export function AppProvider({ children }) {
   const [uiState, setUiState] = useState('normal');
 
   // Modales interactivos
-  const [ratingModalPartitura, setRatingModalPartitura] = useState(null);
+  const [ratingModalPartitura, setRatingModalPartituraRaw] = useState(null);
   const [detailModalPartitura, setDetailModalPartitura] = useState(null);
-  const [addRepertoryModalOpen, setAddRepertoryModalOpen] = useState(false);
+  const [addRepertoryModalOpen, setAddRepertoryModalOpenRaw] = useState(false);
 
   // Notificaciones Toast
   const [toasts, setToasts] = useState([]);
@@ -70,16 +78,38 @@ export function AppProvider({ children }) {
     setToasts(prev => prev.filter(t => t.id !== id));
   };
 
-  // Carga inicial desde la API
-  const aplicarDatosIniciales = ([u, listaObras, listaPartituras, listaRepertorio, listaFavoritos, opciones]) => {
-    setUser(u);
+  // Carga inicial (pública) desde la API
+  const aplicarDatosIniciales = ([listaObras, listaPartituras, opciones]) => {
     setObras(listaObras);
     setPartituras(listaPartituras);
-    setRepertorio(listaRepertorio);
-    setFavoritos(listaFavoritos);
     setFacetas(opciones);
     setCargando(false);
   };
+
+  // Datos del usuario cada vez que cambia la sesión; luego retoma la acción que pidió iniciar sesión
+  useEffect(() => {
+    if (!token) return undefined;
+    let cancelado = false;
+    obtenerDatosUsuario()
+      .then(([u, listaRepertorio, listaFavoritos]) => {
+        if (cancelado) return;
+        setUser(u);
+        setRepertorio(listaRepertorio);
+        setFavoritos(listaFavoritos);
+        setDatosDe(token);
+        consumirAccionPendiente();
+      })
+      .catch((e) => {
+        // 401/403: el cliente HTTP ya cerró la sesión
+        if (!cancelado && e.status !== 401 && e.status !== 403) {
+          addToast(`No se pudieron cargar tus datos: ${e.message}`, 'error');
+        }
+      });
+    return () => {
+      cancelado = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, consumirAccionPendiente]);
 
   useEffect(() => {
     let cancelado = false;
@@ -190,8 +220,34 @@ export function AppProvider({ children }) {
         addToast(`"${found.nombre}" guardada en Favoritos para aprender luego.`, 'success');
       }
     } catch (e) {
-      addToast(e.message, 'error');
+      // 409: ya estaba guardada (p. ej. la acción se retomó tras iniciar sesión)
+      addToast(e.status === 409 ? `"${found.nombre}" ya está en tus favoritos.` : e.message, e.status === 409 ? 'info' : 'error');
     }
+  };
+
+  // --- Guardias de acción: sin sesión abren el login y la acción se retoma al autenticarse ---
+  const conSesion = (mensaje, accion) => (...args) => requireAuth(() => accion(...args), mensaje);
+
+  const setCurrentView = (vista) => {
+    if (VISTAS_PRIVADAS[vista]) requireAuth(() => setCurrentViewRaw(vista), VISTAS_PRIVADAS[vista]);
+    else setCurrentViewRaw(vista);
+  };
+
+  const setRatingModalPartitura = (partitura) => {
+    if (!partitura) setRatingModalPartituraRaw(null);
+    else requireAuth(() => setRatingModalPartituraRaw(partitura), 'Inicia sesión para calificar la dificultad de esta partitura.');
+  };
+
+  const setAddRepertoryModalOpen = (abierto) => {
+    if (!abierto) setAddRepertoryModalOpenRaw(false);
+    else requireAuth(() => setAddRepertoryModalOpenRaw(true), 'Inicia sesión para añadir obras a tu repertorio.');
+  };
+
+  // Cerrar sesión desde la UI: vuelve al catálogo y cierra los modales personales
+  const limpiarVistaPrivada = () => {
+    setCurrentViewRaw('catalogo');
+    setRatingModalPartituraRaw(null);
+    setAddRepertoryModalOpenRaw(false);
   };
 
   // CU02: Calificar Dificultad Relativa de una Partitura (el recálculo bayesiano lo hace el backend)
@@ -294,12 +350,13 @@ export function AppProvider({ children }) {
         toasts,
         addToast,
         removeToast,
-        addToRepertorio,
-        removeFromRepertorio,
-        toggleFavorito,
-        submitRating,
-        createPartitura,
-        updateUserProfile
+        limpiarVistaPrivada,
+        addToRepertorio: conSesion('Inicia sesión para añadir obras a tu repertorio.', addToRepertorio),
+        removeFromRepertorio: conSesion('Inicia sesión para modificar tu repertorio.', removeFromRepertorio),
+        toggleFavorito: conSesion('Inicia sesión para guardar partituras en tus favoritos.', toggleFavorito),
+        submitRating: conSesion('Inicia sesión para calificar la dificultad de esta partitura.', submitRating),
+        createPartitura: conSesion('Inicia sesión para subir una partitura.', createPartitura),
+        updateUserProfile: conSesion('Inicia sesión para editar tu perfil.', updateUserProfile)
       }}
     >
       {children}

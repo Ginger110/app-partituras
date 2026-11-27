@@ -1,6 +1,7 @@
 import AppProvider from './context/AppContext';
 import AuthProvider from './context/AuthContext';
 import { useApp } from './context/useApp';
+import { VISTAS_PRIVADAS } from './context/AppContextInstance';
 import ProtectedRoute from './views/components/ProtectedRoute';
 import MainLayout from './views/layouts/MainLayout';
 import CatalogoPage from './views/pages/CatalogoPage';
@@ -49,9 +50,14 @@ function MainRouter() {
 
   return (
     <MainLayout>
+      {/* El catálogo es público; solo perfil y subir partitura exigen sesión */}
       {currentView === 'catalogo' && <CatalogoPage />}
-      {currentView === 'perfil' && <PerfilPage />}
-      {currentView === 'subir' && <SubirPartituraPage />}
+      {currentView === 'perfil' && (
+        <ProtectedRoute mensaje={VISTAS_PRIVADAS.perfil}><PerfilPage /></ProtectedRoute>
+      )}
+      {currentView === 'subir' && (
+        <ProtectedRoute mensaje={VISTAS_PRIVADAS.subir}><SubirPartituraPage /></ProtectedRoute>
+      )}
     </MainLayout>
   );
 }
@@ -59,12 +65,9 @@ function MainRouter() {
 export default function App() {
   return (
     <AuthProvider>
-      <ProtectedRoute>
-        {/* AppProvider se monta tras autenticar: carga los datos con el token y se reinicia al cerrar sesión */}
-        <AppProvider>
-          <MainRouter />
-        </AppProvider>
-      </ProtectedRoute>
+      <AppProvider>
+        <MainRouter />
+      </AppProvider>
     </AuthProvider>
   );
 }
