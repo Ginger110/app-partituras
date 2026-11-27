@@ -17,7 +17,7 @@ export default function AddToRepertoryModal() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPartitura, setSelectedPartitura] = useState(null);
 
-  if (!addRepertoryModalOpen) return null;
+  if (!addRepertoryModalOpen || !user) return null;
 
   // Filtrar obras no añadidas aún
   const availablePartituras = partituras.filter(

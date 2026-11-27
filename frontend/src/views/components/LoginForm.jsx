@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/useAuth';
-import AuthLayout from '../layouts/AuthLayout';
 
-export default function LoginPage({ onIrARegistro }) {
+export default function LoginForm({ onIrARegistro }) {
   const { login } = useAuth();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -22,7 +21,7 @@ export default function LoginPage({ onIrARegistro }) {
     setEnviando(true);
     try {
       await login(form.email.trim(), form.password);
-      // Al autenticar, ProtectedRoute muestra la app (redirección al catálogo)
+      // Al autenticar se cierra el modal y se retoma la acción pendiente
     } catch (err) {
       setError(err.message || 'No se pudo iniciar sesión.');
       setEnviando(false);
@@ -30,16 +29,7 @@ export default function LoginPage({ onIrARegistro }) {
   };
 
   return (
-    <AuthLayout
-      titulo="Inicia sesión"
-      subtitulo="Accede a tu repertorio y al catálogo de partituras."
-      pie={
-        <>
-          ¿No tienes cuenta?{' '}
-          <button type="button" className="auth-link" onClick={onIrARegistro}>Regístrate</button>
-        </>
-      }
-    >
+    <>
       <form className="auth-form" onSubmit={handleSubmit} noValidate>
         {error && <div className="auth-alert" role="alert">{error}</div>}
 
@@ -52,6 +42,7 @@ export default function LoginPage({ onIrARegistro }) {
             className="form-input"
             value={form.email}
             onChange={cambiar('email')}
+            autoFocus
             required
           />
         </div>
@@ -73,6 +64,10 @@ export default function LoginPage({ onIrARegistro }) {
           {enviando ? 'Ingresando…' : 'Iniciar sesión'}
         </button>
       </form>
-    </AuthLayout>
+      <p className="auth-footer">
+        ¿No tienes cuenta?{' '}
+        <button type="button" className="auth-link" onClick={onIrARegistro}>Regístrate</button>
+      </p>
+    </>
   );
 }

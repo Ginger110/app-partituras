@@ -34,7 +34,7 @@ export default function RatingModal() {
     };
   }, [ratingModalPartitura, setRatingModalPartitura]);
 
-  if (!ratingModalPartitura) return null;
+  if (!ratingModalPartitura || !user) return null;
 
   const userTier = getDifficultyTier(user.nivel_tecnico);
   const partitura = ratingModalPartitura;

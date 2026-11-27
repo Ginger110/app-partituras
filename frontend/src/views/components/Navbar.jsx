@@ -6,11 +6,22 @@ import { getDifficultyTier } from '../../utils/difficultyUtils';
 const ICONO_SALIR = 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1';
 
 export default function Navbar() {
-  const { currentView, setCurrentView, user, repertorio, theme, toggleTheme } = useApp();
-  const { logout } = useAuth();
+  const { currentView, setCurrentView, user, theme, toggleTheme, limpiarVistaPrivada } = useApp();
+  const { logout, isAuthenticated, abrirLogin, abrirRegistro } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const tier = getDifficultyTier(user.nivel_tecnico);
+  const tier = user ? getDifficultyTier(user.nivel_tecnico) : null;
+
+  const handleLogout = () => {
+    limpiarVistaPrivada();
+    logout();
+    setMobileMenuOpen(false);
+  };
+
+  const handleAcceso = (abrir) => {
+    abrir();
+    setMobileMenuOpen(false);
+  };
 
   const navItems = [
     { id: 'catalogo', label: 'Catálogo', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10' },
@@ -95,6 +106,21 @@ export default function Navbar() {
             )}
           </button>
 
+          {/* Visitante: acceso sin bloquear la vista actual */}
+          {!isAuthenticated && (
+            <div className="header-auth-actions">
+              <button type="button" className="btn-ghost header-auth-btn" onClick={() => abrirLogin()}>
+                Iniciar sesión
+              </button>
+              <button type="button" className="btn-primary header-auth-btn" onClick={() => abrirRegistro()}>
+                Registrarse
+              </button>
+            </div>
+          )}
+
+          {/* Con sesión: nivel, perfil y cerrar sesión */}
+          {user && (
+          <>
           <div
             className="user-level-pill"
             style={{
@@ -129,8 +155,17 @@ export default function Navbar() {
 
           <button
             type="button"
+            className="header-user-name"
+            onClick={() => handleNavClick('perfil')}
+            title="Ver mi perfil"
+          >
+            {user.nombre}
+          </button>
+
+          <button
+            type="button"
             className="theme-toggle-btn logout-btn"
-            onClick={logout}
+            onClick={handleLogout}
             aria-label="Cerrar sesión"
             title="Cerrar sesión"
           >
@@ -138,6 +173,8 @@ export default function Navbar() {
               <path d={ICONO_SALIR}></path>
             </svg>
           </button>
+          </>
+          )}
 
           {/* Botón menú hamburguesa (Móvil) */}
           <button
@@ -166,13 +203,21 @@ export default function Navbar() {
       {/* Menú desplegable para Móvil (<= 768px) */}
       {mobileMenuOpen && (
         <div className="mobile-menu-drawer">
-          <div className="mobile-user-summary">
-            <img src={user.avatar_url} alt="" className="mobile-user-avatar" />
-            <div>
-              <div className="mobile-user-name">{user.nombre}</div>
-              <div className="mobile-user-meta">{user.instrumento_principal} • Nivel {user.nivel_tecnico.toFixed(1)}</div>
+          {user && (
+            <div className="mobile-user-summary">
+              <img src={user.avatar_url} alt="" className="mobile-user-avatar" />
+              <div>
+                <div className="mobile-user-name">{user.nombre}</div>
+                <div className="mobile-user-meta">{user.instrumento_principal} • Nivel {user.nivel_tecnico.toFixed(1)}</div>
+              </div>
             </div>
-          </div>
+          )}
+          {!isAuthenticated && (
+            <div className="mobile-auth-actions">
+              <button type="button" className="btn-primary" onClick={() => handleAcceso(abrirLogin)}>Iniciar sesión</button>
+              <button type="button" className="btn-secondary" onClick={() => handleAcceso(abrirRegistro)}>Registrarse</button>
+            </div>
+          )}
           <nav className="mobile-nav-links">
             {navItems.map((item) => {
               const isActive = currentView === item.id;
@@ -229,12 +274,14 @@ export default function Navbar() {
             </button>
           </div>
 
-          <button type="button" className="mobile-nav-link" onClick={logout}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d={ICONO_SALIR}></path>
-            </svg>
-            <span>Cerrar sesión</span>
-          </button>
+          {user && (
+            <button type="button" className="mobile-nav-link" onClick={handleLogout}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d={ICONO_SALIR}></path>
+              </svg>
+              <span>Cerrar sesión</span>
+            </button>
+          )}
         </div>
       )}
     </header>
