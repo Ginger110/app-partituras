@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const swaggerUi = require('swagger-ui-express');
 const { conectar } = require('./config/db');
 const { conectarSQL } = require('./config/mysql');
@@ -11,7 +12,14 @@ const { noEncontrado, manejarErrores } = require('./utils/errores');
 
 const app = express();
 
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
+// Con cookies de sesión el origen no puede ser "*": se usa una lista explícita (separada por comas)
+const origenesPermitidos = (process.env.FRONTEND_URL || process.env.CORS_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map((o) => o.trim().replace(/\/$/, ''))
+  .filter((o) => o && o !== '*');
+
+app.use(cors({ origin: origenesPermitidos, credentials: true }));
+app.use(cookieParser());
 app.use(express.json());
 
 // Ruta de prueba

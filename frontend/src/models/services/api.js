@@ -10,35 +10,23 @@ export class ApiError extends Error {
   }
 }
 
-// --- Token JWT (localStorage) ---
-const TOKEN_KEY = 'scorepulse_token';
+// --- Sesión JWT ---
+// El token vive en una cookie HttpOnly que pone el servidor: JS no puede leerlo y el navegador
+// lo adjunta solo gracias a credentials: 'include'. Aquí no se guarda nada en localStorage.
 export const SESION_EXPIRADA = 'scorepulse:sesion-expirada';
-
-export const tokenStorage = {
-  get: () => {
-    try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
-  },
-  set: (token) => {
-    try { localStorage.setItem(TOKEN_KEY, token); } catch { /* almacenamiento no disponible */ }
-  },
-  clear: () => {
-    try { localStorage.removeItem(TOKEN_KEY); } catch { /* almacenamiento no disponible */ }
-  }
-};
 
 const CODIGOS_SESION_INVALIDA = ['TOKEN_EXPIRADO', 'TOKEN_INVALIDO', 'TOKEN_REQUERIDO', 'USUARIO_NO_ENCONTRADO'];
 
 async function pedir(ruta, { method = 'GET', body } = {}) {
-  const token = tokenStorage.get();
   const headers = {};
   if (body !== undefined) headers['Content-Type'] = 'application/json';
-  if (token) headers.Authorization = `Bearer ${token}`; // se adjunta automáticamente en cada petición
 
   let respuesta;
   try {
     respuesta = await fetch(`${BASE}${ruta}`, {
       method,
       headers,
+      credentials: 'include',
       body: body !== undefined ? JSON.stringify(body) : undefined
     });
   } catch {
@@ -54,9 +42,8 @@ async function pedir(ruta, { method = 'GET', body } = {}) {
   }
 
   if (!respuesta.ok) {
-    // Token vencido o inválido: se cierra la sesión local (AuthContext escucha este evento)
-    if (token && (respuesta.status === 401 || respuesta.status === 403) && CODIGOS_SESION_INVALIDA.includes(datos?.error?.codigo)) {
-      tokenStorage.clear();
+    // Cookie ausente, vencida o inválida: se cierra la sesión local (AuthContext escucha este evento)
+    if ((respuesta.status === 401 || respuesta.status === 403) && CODIGOS_SESION_INVALIDA.includes(datos?.error?.codigo)) {
       window.dispatchEvent(new Event(SESION_EXPIRADA));
     }
     throw new ApiError(
@@ -88,6 +75,7 @@ export const api = {
   registrar: (datos) => pedir('/auth/register', { method: 'POST', body: datos }),
   iniciarSesion: (credenciales) => pedir('/auth/login', { method: 'POST', body: credenciales }),
   perfil: () => pedir('/auth/perfil'),
+  cerrarSesion: () => pedir('/auth/logout', { method: 'POST' }),
 
   // Usuario actual (el del token; sin token, el usuario demo)
   usuarioActual: () => pedir('/usuarios/me'),
