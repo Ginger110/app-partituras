@@ -3,7 +3,9 @@ const { conUsuarioAutenticado, requerirModerador } = require('../middlewares/aut
 const catalogoCtrl = require('../controllers/catalogoCtrl');
 const partituraCtrl = require('../controllers/partituraCtrl');
 const adminCtrl = require('../controllers/adminCtrl');
+const saludCtrl = require('../controllers/saludCtrl');
 
+router.get('/health', saludCtrl.estado);
 router.use('/auth', require('./authRoutes'));
 router.use('/partituras',require('./partituraRoutes'));
 router.use('/catalogos', require('./catalogoRoutes'));
