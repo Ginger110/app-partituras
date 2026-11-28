@@ -46,6 +46,7 @@ function presentarUsuario(u) {
     link_portafolio: u.link_portafolio ?? null,
     avatar_url: u.avatar_url ?? null,
     bio: u.bio || '',
+    ...(u.estadisticas ? { estadisticas: u.estadisticas } : {}),
   };
 }
 
@@ -91,6 +92,9 @@ function presentarRating(r) {
     id: idStr(r._id),
     id_usuario: idStr(r.usuario && r.usuario._id),
     usuario: r.usuario && r.usuario.nombre,
+    // Datos actuales del autor, leídos de TiDB (ver utils/cruzar.js)
+    usuario_avatar: (r.usuario && r.usuario.avatar_url) ?? null,
+    usuario_nivel_actual: num(r.usuario && r.usuario.nivel_tecnico) ?? null,
     id_partitura: idStr(r.partitura && r.partitura._id),
     valor: r.valor,
     nivel_usuario: num(r.nivel_usuario),

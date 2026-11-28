@@ -7,21 +7,11 @@ const path = require('path');
 const { MongoClient } = require('mongodb');
 const { EJSON } = require('bson');
 
-const COLECCIONES = ['usuarios', 'obras', 'catalogos', 'partituras', 'ratings', 'biblioteca'];
+// Los usuarios están en TiDB (npm run db:init). seed/data/usuarios.json se conserva como fuente de esa carga.
+const COLECCIONES = ['obras', 'catalogos', 'partituras', 'ratings', 'biblioteca'];
 
 // Validación de esquema (reemplaza NOT NULL, ENUM y parte de las FK del modelo relacional)
 const VALIDADORES = {
-  usuarios: {
-    bsonType: 'object',
-    required: ['nombre', 'email', 'rol', 'nivel_tecnico', 'nivel_base'],
-    // passwordHash (bcrypt, registro JWT) o contrasena_hash (scrypt, usuarios del seed)
-    anyOf: [{ required: ['passwordHash'] }, { required: ['contrasena_hash'] }],
-    properties: {
-      rol: { enum: ['usuario', 'moderador'] },
-      nivel_tecnico: { bsonType: 'number', minimum: 1, maximum: 10 },
-      nivel_base: { bsonType: 'number', minimum: 1, maximum: 10 },
-    },
-  },
   partituras: {
     bsonType: 'object',
     required: ['nombre', 'estilo', 'instrumentacion', 'obra', 'url', 'info', 'precio', 'dificultad'],
@@ -70,7 +60,6 @@ async function main() {
   }
 
   // Índices (uno por consulta frecuente)
-  await db.collection('usuarios').createIndex({ email: 1 }, { unique: true });          // reemplaza UNIQUE(email)
   await db.collection('obras').createIndex({ 'subido_por._id': 1 });
   await db.collection('catalogos').createIndex({ 'subido_por._id': 1 });
   await db.collection('catalogos').createIndex({ 'partituras._id': 1 });                // catálogos que contienen una partitura
