@@ -6,6 +6,7 @@ const { ApiError, asyncHandler } = require('../utils/errores');
 const { parseId } = require('../utils/ids');
 const { dificultadInicial } = require('../utils/dificultad');
 const { presentarPartitura, presentarRating } = require('../utils/presentadores');
+const { conUsuarios } = require('../utils/cruzar');
 
 const TIPOS_PRECIO = ['todos', 'gratis', 'pago'];
 const ORDENES = ['popularidad', 'dificultad_asc', 'dificultad_desc', 'recientes'];
@@ -136,7 +137,8 @@ const listarRatings = asyncHandler(async (req, res) => {
   const id = parseId(req.params.id);
   if (!(await PartituraModel.porId(id))) throw new ApiError(404, 'PARTITURA_NO_ENCONTRADA', 'No existe una partitura con ese id.');
   const [resumen, ratings] = await Promise.all([RatingModel.resumenDe(id), RatingModel.deLaPartitura(id)]);
-  res.json({ resumen, ratings: ratings.map(presentarRating) });
+  // Consulta cruzada: ratings de MongoDB + nombre, avatar y nivel actuales de sus autores en TiDB
+  res.json({ resumen, ratings: (await conUsuarios(ratings, 'usuario')).map(presentarRating) });
 });
 
 // POST /partituras/:id/ratings  (CU02) body: { valor: -1 | 0 | 1 }
