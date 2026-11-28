@@ -4,6 +4,7 @@ const UsuarioModel = require('../models/UsuarioModel');
 const { ApiError, asyncHandler } = require('../utils/errores');
 const { verificar: verificarScrypt } = require('../utils/clave');
 const { presentarUsuario } = require('../utils/presentadores');
+const { conEstadisticas } = require('../utils/cruzar');
 
 const SALT_ROUNDS = 10;
 const esEmail = (v) => typeof v === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
@@ -45,7 +46,7 @@ const register = asyncHandler(async (req, res) => {
     });
   } catch (e) {
     // Carrera entre dos registros simultáneos con el mismo email
-    if (e.code === 11000) throw new ApiError(409, 'EMAIL_REGISTRADO', 'Ya existe una cuenta con ese correo.');
+    if (e.code === 11000 || e.code === 'ER_DUP_ENTRY') throw new ApiError(409, 'EMAIL_REGISTRADO', 'Ya existe una cuenta con ese correo.');
     throw e;
   }
   res.status(201).json(respuestaAuth(usuario));
@@ -72,7 +73,7 @@ const login = asyncHandler(async (req, res) => {
 const perfil = asyncHandler(async (req, res) => {
   const usuario = await UsuarioModel.porId(req.usuario._id);
   if (!usuario) throw new ApiError(401, 'USUARIO_NO_ENCONTRADO', 'La cuenta del token ya no existe.');
-  res.json(presentarUsuario(usuario));
+  res.json(presentarUsuario(await conEstadisticas(usuario)));
 });
 
 module.exports = { register, login, perfil };

@@ -7,11 +7,13 @@ const { parseId } = require('../utils/ids');
 const { hashear } = require('../utils/clave');
 const { recalcularNivel, redondear } = require('../utils/dificultad');
 const { presentarUsuario, presentarPartitura, presentarItemBiblioteca, num } = require('../utils/presentadores');
+const { conEstadisticas } = require('../utils/cruzar');
 
 const esEmail = (v) => typeof v === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 const nivelValido = (n) => typeof n === 'number' && n >= 1 && n <= 10;
 
-const me = asyncHandler(async (req, res) => res.json(presentarUsuario(req.usuario)));
+// GET /usuarios/me: datos del usuario (TiDB) + conteos de su actividad (MongoDB)
+const me = asyncHandler(async (req, res) => res.json(presentarUsuario(await conEstadisticas(req.usuario))));
 
 // PUT /usuarios/me  (perfil editable)
 const actualizarMe = asyncHandler(async (req, res) => {
