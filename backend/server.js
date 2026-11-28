@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const { conectar } = require('./config/db');
+const { conectarSQL } = require('./config/mysql');
 const openapi = require('./docs/openapi');
 const rutas = require('./routes');
 const UsuarioModel = require('./models/UsuarioModel');
@@ -31,7 +32,8 @@ app.use(manejarErrores);
 // Inicialización del servidor
 async function iniciar() {
   if (!process.env.JWT_SECRET) throw new Error('Falta la variable de entorno JWT_SECRET');
-  await conectar();
+  await conectar();      // MongoDB Atlas (NoSQL)
+  await conectarSQL();   // TiDB Cloud (relacional)
   await UsuarioModel.asegurarIndices();
   const PORT = process.env.PORT || 3000;
   return app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
