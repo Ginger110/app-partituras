@@ -11,9 +11,9 @@ const estructura = asyncHandler(async (req, res) => {
   const db = getDB();
 
   if (tipo === 'alter1') {
-    // ALTER TABLE usuario ADD COLUMN fecha_registro  ->  agregar el campo a los documentos que no lo tienen
-    const r = await db.collection('usuarios').updateMany({ fecha_registro: { $exists: false } }, { $set: { fecha_registro: new Date() } });
-    return res.json({ tipo, mensaje: 'Campo fecha_registro agregado a usuarios.', modificados: r.modifiedCount });
+    // Los usuarios están en TiDB y la API se conecta con un usuario sin permiso de ALTER (mínimo privilegio).
+    // La tabla ya tiene created_at (equivale a fecha_registro); los cambios de estructura se hacen en db/schema.sql.
+    throw new ApiError(409, 'DDL_NO_PERMITIDO', 'La tabla usuarios está en TiDB: la API no tiene permiso de ALTER. La columna created_at ya cumple el rol de fecha_registro.');
   }
   if (tipo === 'alter2') {
     // ALTER TABLE partitura MODIFY precio DECIMAL(10,2)  ->  convertir el campo a Decimal128
