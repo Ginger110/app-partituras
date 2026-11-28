@@ -3,12 +3,11 @@ const { ObjectId } = require('mongodb');
 const { ApiError, asyncHandler } = require('../utils/errores');
 const UsuarioModel = require('../models/UsuarioModel');
 
-// Devuelve el payload verificado del header "Authorization: Bearer <token>", null si no hay token.
+// Devuelve el payload verificado de la cookie HttpOnly "token", null si no hay cookie.
 // Lanza ApiError 401 (expirado) o 403 (firma/estructura inválida).
 function leerToken(req) {
-  const header = req.get('authorization') || '';
-  const [esquema, token] = header.split(' ');
-  if (esquema !== 'Bearer' || !token) return null;
+  const token = req.cookies?.token;
+  if (!token) return null;
   try {
     const p = jwt.verify(token, process.env.JWT_SECRET);
     if (!p || typeof p.id !== 'string' || !ObjectId.isValid(p.id)) throw new Error('payload');

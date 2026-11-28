@@ -14,7 +14,18 @@ function firmarToken(usuario) {
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '24h' });
 }
 
-const respuestaAuth = (usuario) => ({ token: firmarToken(usuario), usuario: presentarUsuario(usuario) });
+// El JWT viaja solo en una cookie HttpOnly: nunca en el cuerpo de la respuesta ni accesible desde JS
+const esProduccion = () => process.env.NODE_ENV === 'production';
+const opcionesCookie = () => ({
+  httpOnly: true,
+  secure: esProduccion(),
+  sameSite: esProduccion() ? 'none' : 'lax',
+});
+
+function enviarSesion(res, status, usuario) {
+  res.cookie('token', firmarToken(usuario), { ...opcionesCookie(), maxAge: 24 * 60 * 60 * 1000 });
+  res.status(status).json({ usuario: presentarUsuario(usuario) });
+}
 
 // POST /api/auth/register  body: { nombre, email, password }
 const register = asyncHandler(async (req, res) => {
@@ -49,7 +60,7 @@ const register = asyncHandler(async (req, res) => {
     if (e.code === 11000 || e.code === 'ER_DUP_ENTRY') throw new ApiError(409, 'EMAIL_REGISTRADO', 'Ya existe una cuenta con ese correo.');
     throw e;
   }
-  res.status(201).json(respuestaAuth(usuario));
+  enviarSesion(res, 201, usuario);
 });
 
 // POST /api/auth/login  body: { email, password }
@@ -66,8 +77,14 @@ const login = asyncHandler(async (req, res) => {
   if (!valida) throw new ApiError(401, 'CREDENCIALES_INVALIDAS', 'Correo o contraseña incorrectos.');
 
   const { passwordHash, contrasena_hash, ...usuario } = doc; // eslint-disable-line no-unused-vars
-  res.json(respuestaAuth(usuario));
+  enviarSesion(res, 200, usuario);
 });
+
+// POST /api/auth/logout  (borra la cookie de sesión)
+const logout = (req, res) => {
+  res.clearCookie('token', opcionesCookie());
+  res.status(200).json({ mensaje: 'Sesión cerrada.' });
+};
 
 // GET /api/auth/perfil  (protegida)
 const perfil = asyncHandler(async (req, res) => {
@@ -76,4 +93,4 @@ const perfil = asyncHandler(async (req, res) => {
   res.json(presentarUsuario(await conEstadisticas(usuario)));
 });
 
-module.exports = { register, login, perfil };
+module.exports = { register, login, logout, perfil };

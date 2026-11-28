@@ -14,7 +14,7 @@ function obtenerDatosUsuario() {
 }
 
 export function AppProvider({ children }) {
-  const { token, requireAuth, consumirAccionPendiente } = useAuth();
+  const { sesion, requireAuth, consumirAccionPendiente } = useAuth();
 
   // Modo Oscuro / Claro con persistencia en localStorage y detección de preferencia del SO
   const [theme, setTheme] = useState(() => {
@@ -39,12 +39,12 @@ export function AppProvider({ children }) {
   const [partituras, setPartituras] = useState([]);
   const [facetas, setFacetas] = useState({ instrumentaciones: [], estilos: [] });
 
-  // Datos personales: solo se exponen si pertenecen al token actual (al cerrar sesión desaparecen)
+  // Datos personales: solo se exponen si pertenecen a la sesión actual (al cerrar sesión desaparecen)
   const [datosDe, setDatosDe] = useState(null);
   const [userState, setUser] = useState(null);
   const [repertorioState, setRepertorio] = useState([]);
   const [favoritosState, setFavoritos] = useState([]);
-  const datosVigentes = !!token && datosDe === token;
+  const datosVigentes = !!sesion && datosDe === sesion;
   const user = datosVigentes ? userState : null;
   const repertorio = datosVigentes ? repertorioState : [];
   const favoritos = datosVigentes ? favoritosState : [];
@@ -88,7 +88,7 @@ export function AppProvider({ children }) {
 
   // Datos del usuario cada vez que cambia la sesión; luego retoma la acción que pidió iniciar sesión
   useEffect(() => {
-    if (!token) return undefined;
+    if (!sesion) return undefined;
     let cancelado = false;
     obtenerDatosUsuario()
       .then(([u, listaRepertorio, listaFavoritos]) => {
@@ -96,7 +96,7 @@ export function AppProvider({ children }) {
         setUser(u);
         setRepertorio(listaRepertorio);
         setFavoritos(listaFavoritos);
-        setDatosDe(token);
+        setDatosDe(sesion);
         consumirAccionPendiente();
       })
       .catch((e) => {
@@ -109,7 +109,7 @@ export function AppProvider({ children }) {
       cancelado = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, consumirAccionPendiente]);
+  }, [sesion, consumirAccionPendiente]);
 
   useEffect(() => {
     let cancelado = false;
